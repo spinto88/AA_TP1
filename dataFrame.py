@@ -25,7 +25,8 @@ df['class'] = ['ham' for _ in range(len(ham_txt))]+['spam' for _ in range(len(sp
 df['len'] = map(len, df.text)
 
 # 2) Cantidad de espacios en el mail.
-def count_spaces(txt): return txt.count(" ")
+def count_spaces(txt): 
+    return txt.count(" ")
 df['count_spaces'] = map(count_spaces, df.text)
 
 # Extraigo otros atributos
@@ -34,6 +35,33 @@ for word in words_feat1 + words_feat2:
     print word,
     df["count_" + word] = [txt.lower().count(word) for txt in df.text]
 
+# Cuento la cantidad de caracteres no ascii de un texto
+def non_ascii_caracter(txt):
+    non_ascii = 0
+    for letter in txt:
+        if ord(letter) > 127:
+            non_ascii += 1
+    return non_ascii
+
+df['non_ascii'] = map(non_ascii_caracter, df.text)
+
+# Veo si es html
+def is_html(txt):
+    if '<html' in txt:
+        return 1
+    else:
+        return 0
+
+df['is_html'] = map(is_html, df.text)
+
+# Veo si es una respuesta
+def is_a_request(txt):
+    if 'subject: re' in txt:
+        return 1
+    else:
+        return 0
+
+df['is_a_request'] = map(is_a_request, df.text)
 
 
 # Guardo el data frame en un archivo
