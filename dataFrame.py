@@ -4,11 +4,25 @@ import json
 import numpy as np
 import pandas as pd
 import cPickle as pk
+import codecs
+
+# ----------------------- Palabras a chequear -------------------------- #
 
 # carga las palabras (word features) que mejor discriminan segun ("On Feature Extraction for Spam E-Mail Detection". Serkan Gunal et. al.)
 words_feat1 = ['make', 'actor', 'money', 'address', 'offer', 'monkey', 'adult', 'order', 'all', 'original', 'blue', 'bank', 'our', 'best', 'over', 'chamber', 'business', 'paper', 'punch', 'call', 'people', 'revenue', 'click', 'pm', 'conference', 'price', 'credit', 'cs', 'promotion', 'tape', 'data', 'quality', 'thread', 'dear', 're', 'egg', 'direct', 'receive', 'edu', 'regards', 'email', 'remove', 'upgrade', 'fast', 'report', 'font', 'fault', 'free', 'spam', 'george', 'table', 'hello', 'take', 'germ', 'here', 'technology', 'gun', 'hi', 'telnet', 'hammer', 'how', 'thank', 'hp', 'think', 'wrap', 'internet', 'indigo', 'investment', 'we']
 # carga las palabras que aparecen frecuentemente (y no contenidas ya en words_feat1) en spam segun ("saving private E-mails". Steven Vaughan-Nichols)
 words_feat2 = ['madam', 'republic', 'enter', 'valuable']
+
+# Estudio las 25 palabras mas frecuentes que se dan en los 
+# ham y spam del dataset
+
+ham = codecs.open('Exclusive_ham.txt', 'r', 'utf-8').read()
+spam = codecs.open('Exclusive_spam.txt', 'r', 'utf-8').read()
+
+ham_words = ham.split('\n')[:25]
+spam_words = spam.split('\n')[:25]
+
+# --------------------------------------------------------------- #
 
 # Leo los mails (poner los paths correctos).
 ham_txt = json.load(open('dataset_dev/ham_dev.json'))
@@ -31,8 +45,7 @@ df['count_spaces'] = map(count_spaces, df.text)
 
 # Extraigo otros atributos
 # 3) Cantidad de apariciones de cada una de las words_feature
-for word in words_feat1 + words_feat2:
-    print word,
+for word in words_feat1 + words_feat2 + ham_words + spam_words:
     df["count_" + word] = [txt.lower().count(word) for txt in df.text]
 
 # Cuento la cantidad de caracteres no ascii de un texto
