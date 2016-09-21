@@ -51,7 +51,7 @@ for word in words_feat1 + words_feat2 + ham_words + spam_words:
 # Cuento la cantidad de caracteres no ascii de un texto
 def non_ascii_caracter(txt):
     non_ascii = 0
-    for letter in txt:
+    for letter in txt.lower():
         if ord(letter) > 127:
             non_ascii += 1
     return non_ascii
@@ -60,7 +60,7 @@ df['non_ascii'] = map(non_ascii_caracter, df.text)
 
 # Veo si es html
 def is_html(txt):
-    if '<html' in txt:
+    if '<html' in txt.lower():
         return 1
     else:
         return 0
@@ -69,7 +69,7 @@ df['is_html'] = map(is_html, df.text)
 
 # Veo si es una respuesta
 def is_a_request(txt):
-    if 'subject: re' in txt:
+    if 'subject: re' in txt.lower():
         return 1
     else:
         return 0
