@@ -77,18 +77,11 @@ def is_a_request(txt):
 df['is_a_request'] = map(is_a_request, df.text)
 
 
-# Guardo el data frame en un archivo
-# Se carga con cPickle.load(file('DataFrame.pk'))
-fp = open('DataFrame.pk','w')
-pk.dump(df,fp)
-fp.close()
-
-
-"""
-X e y son las matrices que hay que pasarles a los clasificadores
+#X e y son las matrices que hay que pasarles a los clasificadores
 # Preparo data para clasificar
 X = df.ix[:,2:].values  # ix sirve para indexar las columnas con enteros
 y = df['class']
-"""
 
+np.save('X.npy', X)
+np.save('y.npy', y)
 

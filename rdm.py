@@ -5,17 +5,13 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 
-# Cargo el data Frame guardado como un archivo cPickle
-df = pk.load(file('DataFrame.pk'))
+
+# Dimension del espacio reducido
+number_of_factors = 20
+
 
 # X es una matriz de documentos x features
-X = df.ix[:, 2:].values
-y = df['class']
-
-np.save('X.npy', X)
-np.save('y.npy', y)
-
-exit()
+X = np.load('X.npy')
 
 number_of_doc = X.shape[0]
 
@@ -25,12 +21,9 @@ cov = np.cov(np.transpose(X))
 # Hago una descomposicion SVD
 U, S, Vt = linalg.svd(cov)
 
-S = np.log10(S)
+U_red = U[:number_of_factors]
 
-plt.plot(S, '.-', markersize = 10)
-plt.axis([0, len(S), min(S) - 1, max(S) + 1])
-plt.xlabel('Number of eigenvalue')
-plt.ylabel('log10(Eigenvalue)')
-plt.grid('on')
-plt.show()
+X_red = X.dot(np.transpose(U_red))
 
+np.save('U_red.npy', U_red)
+np.save('X_red.npy', X_red)
