@@ -25,8 +25,8 @@ spam_words = spam.split('\n')[:25]
 # --------------------------------------------------------------- #
 
 # Leo los mails (poner los paths correctos).
-ham_txt = json.load(open('dataset_dev/ham_dev.json'))
-spam_txt = json.load(open('dataset_dev/spam_dev.json'))
+ham_txt = json.load(open('ham_dev.json'))
+spam_txt = json.load(open('spam_dev.json'))
 
 # Armo un dataset de Pandas
 # http://pandas.pydata.org/
