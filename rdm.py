@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 # Dimension del espacio reducido
-number_of_factors = 20
+number_of_factors = 120
 
 
 # X es una matriz de documentos x features
@@ -25,5 +25,5 @@ U_red = U[:number_of_factors]
 
 X_red = X.dot(np.transpose(U_red))
 
-np.save('U_red.npy', U_red)
-np.save('X_red.npy', X_red)
+np.save('U_red' + str(number_of_factors) + '.npy', U_red)
+np.save('X_red' + str(number_of_factors) + '.npy', X_red)
