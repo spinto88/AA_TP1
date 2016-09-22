@@ -5,7 +5,7 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 
-
+#
 # Dimension del espacio reducido
 number_of_factors = 120
 
