@@ -4,3 +4,13 @@
 *.pyc
 *.zip
 *swp
+*.csv
+*~
+*.aux
+*.blg
+*.out
+*.log
+*.bbl
+*.pdf
+*.backup
+*.npy

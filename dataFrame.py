@@ -25,8 +25,8 @@ spam_words = spam.split('\n')[:25]
 # --------------------------------------------------------------- #
 
 # Leo los mails (poner los paths correctos).
-ham_txt = json.load(open('dataset_dev/ham_dev.json'))
-spam_txt = json.load(open('dataset_dev/spam_dev.json'))
+ham_txt = json.load(open('ham_dev.json'))[:5000]
+spam_txt = json.load(open('spam_dev.json'))[:5000]
 
 # Armo un dataset de Pandas
 # http://pandas.pydata.org/
@@ -77,18 +77,11 @@ def is_a_request(txt):
 df['is_a_request'] = map(is_a_request, df.text)
 
 
-# Guardo el data frame en un archivo
-# Se carga con cPickle.load(file('DataFrame.pk'))
-fp = open('DataFrame.pk','w')
-pk.dump(df,fp)
-fp.close()
-
-
-"""
-X e y son las matrices que hay que pasarles a los clasificadores
+#X e y son las matrices que hay que pasarles a los clasificadores
 # Preparo data para clasificar
 X = df.ix[:,2:].values  # ix sirve para indexar las columnas con enteros
 y = df['class']
-"""
 
+np.save('X_poca_data.npy', X)
+np.save('y_poca_data.npy', y)
 

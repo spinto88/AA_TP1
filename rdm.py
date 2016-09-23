@@ -5,17 +5,13 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 
-# Cargo el data Frame guardado como un archivo cPickle
-df = pk.load(file('DataFrame.pk'))
+#
+# Dimension del espacio reducido
+number_of_factors = 5
 
-clf = DTC()
 
 # X es una matriz de documentos x features
-X = df.ix[:, 2:].values
-y = df['class']
-
-scores = cross_val_score(clf, X, y, cv = 10)
-print 'Sin reduccion de dim: score = ', np.mean(scores), np.std(scores)
+X = np.load('X.npy')
 
 number_of_doc = X.shape[0]
 
@@ -25,18 +21,9 @@ cov = np.cov(np.transpose(X))
 # Hago una descomposicion SVD
 U, S, Vt = linalg.svd(cov)
 
-# Cantidad de autovalores con los que me quedo 
-# (< dim(features))
+U_red = U[:number_of_factors]
 
-for eigs in [5, 10, 20, 40]:
+X_red = X.dot(np.transpose(U_red))
 
-    number_of_eig = eigs
-    U_reduce = U[:number_of_eig]
-    S_reduce = S[:number_of_eig]
-
-    # Matrix reducida
-    X_reduce = X.dot(np.transpose(U_reduce))
-  
-    scores = cross_val_score(clf, X_reduce, y, cv = 10)
-    print 'Eig: ', number_of_eig, ' - score: ', np.mean(scores), np.std(scores)
-    
+np.save('U_red' + str(number_of_factors) + '.npy', U_red)
+np.save('X_red' + str(number_of_factors) + '.npy', X_red)

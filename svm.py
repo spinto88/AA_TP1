@@ -1,4 +1,3 @@
-from scipy import linalg
 import numpy as np
 import cPickle as pk
 from sklearn.svm import SVC
@@ -6,34 +5,24 @@ from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 from time import time
 
-# Cargo el data Frame guardado como un archivo cPickle
-df = pk.load(file('DataFrame.pk'))
-
 # X es una matriz de documentos x features
-X = df.ix[:, 2:].values
-y = df['class']
+X = np.load('X_poca_data.npy')
+y = np.load('y_poca_data.npy')
 
-del(df)
-
-kernels = ['linear', 'poly', 'rbf', 'sigmoid']
-Crange = [0.1, 1.00, 10.00, 100.00]
-
-for kernel in kernels:
-
-    for C in Crange:
+for kernel in ['rbf', 'poly', 'sigmoid', 'linear']:
+    
+    for C in [1.00, 0.1, 100.0, 10.00]:
 
         ti = int(time())
 
-        clf = SVC(kernel = kernel, C = C)
+        print kernel, C
 
+        clf = SVC(C = C, kernel = kernel, cache_size = 2048)
         scores = cross_val_score(clf, X, y, cv = 10)
 
-        tf = int(time() - ti)
+        tf = int(time()-ti)
 
-        mean = np.mean(scores)
-        std = np.std(scores)
-
-        fp = open('SVM.dat','a')
-        fp.write(kernel + '\t' + str(C) + '\t' + str(mean) + '\t' + str(std) + '\t' + str(time) + '\n')
+        fp = open('Svm.txt','a')
+        fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
         fp.close()
-
+    
