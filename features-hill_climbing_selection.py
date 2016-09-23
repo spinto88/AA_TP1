@@ -25,7 +25,7 @@ for t in range(16):
 	S = list(np.random.choice(df.columns[2:],size=size, replace=False))
 	F = list(set(df.columns[2:])-set(S))
 	
-	scores = cross_val_score(clf, df.ix[:,S], y, cv = 5)
+	scores = cross_val_score(clf, df.ix[:,S], y, cv = 2)
 	old_perf =  np.mean(scores)
 	
 	new_perf=old_perf
@@ -36,16 +36,17 @@ for t in range(16):
 		s_ranking = pd.DataFrame([],columns=['s','score'])
 		s_ranking.set_index('s')	
 		for f in F:
-			#f=F[1]
+			#i+=1
+			#f=F[i]
 			P = F
 			P.append(f)
-			scores = cross_val_score(clf, df.ix[:,P], y, cv = 5)
+			scores = cross_val_score(clf, df.ix[:,P], y, cv = 2)
 			f_ranking.loc[f,'score'] =  np.mean(scores)
 		for s in S:
 			#s=S[1]
 			P = S
 			P.remove(s)
-			scores = cross_val_score(clf, df.ix[:,P], y, cv = 5)
+			scores = cross_val_score(clf, df.ix[:,P], y, cv = 2)
 			s_ranking.loc[s,'score'] =  np.mean(scores)
 		f_ranking = f_ranking.sort(columns=['score'], ascending=False) 		
 		s_ranking = s_ranking.sort(columns=['score'], ascending=False) 		
