@@ -11,6 +11,5 @@
 *.out
 *.log
 *.bbl
-*.pdf
 *.backup
 *.npy
