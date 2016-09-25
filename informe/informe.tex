@@ -32,6 +32,46 @@ Usamos conceptos del libro ``An Introduction to Statistical Learning''~\cite{jam
 
 \subsection{SVM}
 
+
+\subsection{DTC}
+
+\par Con la finalidad de escoger el mejor árbol de desición exploramos 
+el desempeño sobre los datos de entrenamiento en una grilla de híper-parámetros.
+De entre el total de híper-parametros del modelo decidimos profundizar sobre 
+tres que nos parecieron especialmente relevantes:
+i) Profundidad máxima [Valor entero]: Máxima profundidad del árbol de desición.
+ii) Criterio [Gini Impurity/ Information Gain]: función que mide la cualidad 
+del 'split'.
+iii) Splitter [Best / Random]: estrategia usada para elegir el mejor 
+'split' en cada nodo.
+
+Los híper-parametros 'Criterio' y 'Splitter' no tuvieron un impacto 
+significativo en la performance; para ellos escogimos los valores Gini Impurity 
+y Best, respectivamente.
+El híper parametro 'Profundidad máxima' tuvo, en cambio, un impacto 
+importante sobre el desempeño. La figura siguiente (INSERTAR FIGURA 
+'desempeño-profundidad_arboles.png' porfa!) muestra 
+la relación funcional entre ambos.
+
+FIGURA
+
+Vemos que el desempeño presenta una fuerte mejora con la profundidad máxima 
+permitida al árbol hasta profundidades de 15 a 20 niveles. Luego el desempeño 
+prácticamente no crece. Para evitarnos posibles problemas de 'overfitting', 
+decidimos limitar en 15 la profundidad de los árboles usados con un desempeño 
+correspondiente de 0.982.
+
+\subsection{DTC}
+
+
+\subsection{NB}
+
+El metodo Naive Bayes no resulto adecuado para este set de datos. El desempeño 
+sobre los datos de entrenamiento fue de tan solo 0.524.
+
+\subsection{NB}
+
+
 \par Decidimos realizar el estudio en un principio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (CITAR!!!) vimos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los observados anteriormente. De un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C.
 
 \begin{figure}[H]
