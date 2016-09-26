@@ -5,9 +5,9 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 
-
+#
 # Dimension del espacio reducido
-number_of_factors = 120
+number_of_factors = 5
 
 
 # X es una matriz de documentos x features
@@ -21,9 +21,12 @@ cov = np.cov(np.transpose(X))
 # Hago una descomposicion SVD
 U, S, Vt = linalg.svd(cov)
 
-U_red = U[:number_of_factors]
+for i in range(5):
+    np.save('autovector' + str(i) + '.npy', U[i])
 
-X_red = X.dot(np.transpose(U_red))
+#U_red = U[:number_of_factors]
 
-np.save('U_red' + str(number_of_factors) + '.npy', U_red)
-np.save('X_red' + str(number_of_factors) + '.npy', X_red)
+#X_red = X.dot(np.transpose(U_red))
+
+#np.save('U_red' + str(number_of_factors) + '.npy', U_red)
+#np.save('X_red' + str(number_of_factors) + '.npy', X_red)

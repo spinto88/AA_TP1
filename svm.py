@@ -5,6 +5,7 @@ from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 from time import time
 
+
 # Cargo el data Frame guardado como un archivo cPickle
 #df = pk.load(file('DataFrame.pk'))
 
@@ -21,10 +22,7 @@ clf = SVC(kernel = kernel, C = C, cache_size = 2048)
 
 scores = cross_val_score(clf, X, y, cv = 10)
 
-tf = int(time()-ti)
-
 fp = open('Svm.txt','a')
 fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
 fp.close()
     
-

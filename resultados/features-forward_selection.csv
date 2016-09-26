@@ -1,0 +1,20 @@
+S,mean,std
+"['is_html']",0.59931111111111113,0.0046354245214248659
+"['is_html', 'count_receive']",0.79978888888888888,0.10321273368660348
+"['is_html', 'count_receive', u'count_urn']",0.87354444444444446,0.045151957424449038
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin']",0.93661111111111117,0.0060763658729722867
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005']",0.95814444444444435,0.028424441751578686
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes']",0.96523333333333328,0.026595887549918318
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron']",0.96957777777777776,0.023528905259617351
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click']",0.97431111111111124,0.020417149654151031
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len']",0.97867777777777776,0.016870948073208228
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces']",0.98166666666666669,0.014229555401121289
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our']",0.98432222222222221,0.012350208675200113
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative']",0.98531111111111114,0.011512934218564261
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove']",0.98623333333333341,0.010696566888954441
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove', u'count_2004']",0.98691111111111118,0.010285708651771901
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove', u'count_2004', u'count_mimeole']",0.9873666666666665,0.0098622988330107492
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove', u'count_2004', u'count_mimeole', 'count_investment']",0.98793333333333333,0.0094611225288637486
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove', u'count_2004', u'count_mimeole', 'count_investment', 'count_hp']",0.98796666666666666,0.0094959120509307843
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove', u'count_2004', u'count_mimeole', 'count_investment', 'count_hp', 'count_money']",0.98817777777777782,0.0091727185409832806
+"['is_html', 'count_receive', u'count_urn', u'count_x-origin', u'count_2005', u'count_content-classes', u'count_enron', 'count_click', 'len', 'count_spaces', 'count_our', u'count_multipart/alternative', 'count_remove', u'count_2004', u'count_mimeole', 'count_investment', 'count_hp', 'count_money', 'count_dear']",0.98857777777777778,0.0090294853086026802

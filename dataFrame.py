@@ -45,7 +45,8 @@ df['count_spaces'] = map(count_spaces, df.text)
 
 # Extraigo otros atributos
 # 3) Cantidad de apariciones de cada una de las words_feature
-for word in words_feat1 + words_feat2 + ham_words + spam_words:
+
+for word in words_feat1 + words_feat2 + ham_words + spam_words:    
     df["count_" + word] = [txt.lower().count(word) for txt in df.text]
 
 # Cuento la cantidad de caracteres no ascii de un texto
@@ -76,12 +77,12 @@ def is_a_request(txt):
 
 df['is_a_request'] = map(is_a_request, df.text)
 
-
+pk.dump(df, file('DataFrame.pk','w'))
 #X e y son las matrices que hay que pasarles a los clasificadores
 # Preparo data para clasificar
 X = df.ix[:,2:].values  # ix sirve para indexar las columnas con enteros
 y = df['class']
 
-np.save('X.npy', X)
-np.save('y.npy', y)
+np.save('X_poca_data.npy', X)
+np.save('y_poca_data.npy', y)
 
