@@ -6,27 +6,25 @@ import matplotlib.pyplot as plt
 from time import time
 
 # Cargo el data Frame guardado como un archivo cPickle
-df = pk.load(file('DataFrame.pk'))
+#df = pk.load(file('DataFrame.pk'))
 
 # X es una matriz de documentos x features
-X = df.ix[:, 2:].values
-y = df['class']
+X = np.load('X.npy')
+y = np.load('y.npy')
 
-del(df)
+C = 1.00
+kernel = 'poly'
 
-for C in [1.00, 0.1, 100.0, 10.00]:
+ti = int(time())
 
-    for kernel in ['linear', 'poly', 'rbf', 'sigmoid']:
+clf = SVC(kernel = kernel, C = C, cache_size = 2048)
 
-        ti = int(time())
+scores = cross_val_score(clf, X, y, cv = 10)
 
-        clf = SVC(kernel = kernel, C = C)
-        scores = cross_val_score(clf, X, y, cv = 10)
+tf = int(time()-ti)
 
-        tf = int(time()-ti)
-
-        fp = open('Svm.txt','a')
-        fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
-        fp.close()
+fp = open('Svm.txt','a')
+fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
+fp.close()
     
 
