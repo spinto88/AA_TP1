@@ -79,14 +79,13 @@ prácticamente no crece. Para evitarnos posibles problemas de 'overfitting',
 decidimos limitar en 15 la profundidad de los árboles usados con un desempeño 
 correspondiente de 0.982.
 
-\subsection{Naive Bayes. NB.}
+\subsection{Naive Bayes. NB.}\label{sec:NB}
 
-El m\'etodo Naive Bayes no result\'o adecuado para este set de datos. El desempeño 
-sobre los datos de entrenamiento fue de tan solo 0.524. 
-
-
-\todo[inline]{¿Por qu\'e creemos el desepeño de NB fue tan malo?. Gustavo: a mi se me ocurre que las variables son demasiado dependientes entre s\'i, lo cual \'indicar\'ia un problema con las variables que tomamos}
-
+El m\'etodo de Naive Bayes no result\'o adecuado para este set de datos. El desempeño sobre los datos de entrenamiento fue de tan solo $0.52 \pm 0.01$. 
+La hipótesis sobre este mal desempeño es que los atributos elegidos no son lo
+suficientemente independientes como para estar dentro de la hipótesis del
+método. En la sección \ref{sec:NB_PCA} realizamos un nuevo estudio 
+sobre este método, buscando mejorar su eficacia.
 
 \subsection{k-nearest neighbors. KNN}
 
@@ -160,7 +159,6 @@ Sigmoid & 154 \\
 \end{table}
 De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM para un los kernels \emph{linear} y \emph{poly} dan una muy buena eficacia, que el tiempo para \emph{linear} es mucho mayor que para \emph{poly}, pero que ambos casos, el tiempo de validación es claramente más alto que los otros métodos estudiados, aún al trabajar con un dataset acotado.
 
-(SI TERMINA;, VOY A PONER SVM CON C=1 Y KERNEL = POLY CON TODA LA DATA)
 
 \section{Reducci\'on de dimensionalidad}
 
@@ -213,6 +211,23 @@ Autovector & Componentes principales \\
 \end{tabular}
 \end{table}
 
+\subsubsection{Naive Bayes + PCA}\label{sec:NB_PCA}
+
+\par El método de Naive Bayes no resultó satisfactorio para el dataset original, como reportamos en la sección \ref{sec:NB}. La principal hipótesis de tan mal desempeño, fue el hecho de que Naive Bayes suponga que los atributos son independientes entre sí. Por lo tanto, esperabamos que con los nuevos atributos obtenidos mediante la técnica PCA, el método funcione mejor, debido a que dichos atributos se construyen al pedir ortogonalidad entre los mismos, resultando en atributos más descorrelacionados que los atributos originales entre sí. En la tabla \ref{table:NB} reportamos los valores de eficacia, donde prácticamente no se ven diferencias en tomar un subconjunto de atributos surgidos de PCA y el desempeño original. \footnote{Cuando estudiamos el caso de Naive-Bayes con el dataset original, encontramos grandes diferencias en los resultados obtenidos, según en qué ordenador corríamos el script. El problema estaba en una diferencia de versiones de la librería \emph{scikit-learn}. Los resultados reportados se corresponden con la versión 0.17.1.}
+
+\begin{table}
+\centering
+\caption{}
+\label{table:NB}
+\begin{tabular}{lll}
+Cantidad de atributos & Eficacia & error \\
+5 & 0.51 & 0.01 \\
+10 & 0.52 & 0.02 \\
+20 & 0.52 & 0.01 \\
+120 & 0.51 & 0.01 \\
+original & 0.52 & 0.01 \\
+\end{tabular}
+\end{table}
 
 \section{Resultados}
 
