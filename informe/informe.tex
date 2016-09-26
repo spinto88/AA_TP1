@@ -20,6 +20,8 @@ Usamos conceptos del libro ``An Introduction to Statistical Learning''~\cite{jam
 
 \par Identificamos 127 atributos para la clasificación del mail, los cuales constituyeron dos grupos: características del texto y palabras involucradas. Dentro de las características del texto elegimos:
 \begin{itemize}
+\item La diferencia sim\'etrica de los conjuntos de palabras m\'as frecuentes en \emph{spam} y \emph{ham}
+\item Palabras reportadas en dos papers \cite{Gunal} y \cite{Vaughan}. 
 \item Largo del documento.
 \item Cantidad de espacios en blanco.
 \item Si el archivo contiene o no html.
@@ -29,16 +31,6 @@ Usamos conceptos del libro ``An Introduction to Statistical Learning''~\cite{jam
 La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph{spam} es más probable que contenga un archivo \emph{html} y una mayor cantidad de caracteres no ASCII, como sucede en el empleo de idiomas que no sea el inglés. Por otro lado, en un mail etiquetado como \emph{ham} esperamos que tenga un largo menor que \emph{spam}, que haya grandes diferencias en el empleo de uso de espacios en blanco, y si el mail es una respuesta, probablemente provenga de una conversación entre dos usuarios reales.
 \par La elección de palabras involucradas se basó a su vez en dos criterios separados: por un lado incluimos un listado de palabras propuestas por los trabajos \cite{Gunal} y \cite{Vaughan}, que fueron catalogadas como buenas discriminadoras entre mails \emph{ham} y \emph{spam}, y por otro lado, mediante la librería de python \emph{nltk} (\cite{nltk}), extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. El atributo entonces elegido es la cantidad de veces que aparece una dada palabra en el texto.
 
-
-\begin{comment}
-  \begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.4\textwidth}
-      \includegraphics[width=\textwidth]{../Imagenes/artificial_sigmoid_fit}
-      \caption{}
-    \end{subfigure}
-  \end{figure}
-\end{comment}
 
 \section{Modelos}
 
@@ -146,7 +138,7 @@ Con 40 \'arboles probamos el desempeño
 \end{figure}
 
 \par Los tiempos de ejecución para cada kernel, promediados para los valores de $C$ empleados son los siguientes:
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{}
 \label{table:time_svm}
@@ -181,7 +173,9 @@ Este m\'etodo considera la dependecia de las variables.
 
 \subsection{Hill climbing}
 
-\todo[inline]{Ya subí los optimos locales a la carpeta resultados/ . Tengo que evaluar que pas\'o. }
+Implementamos completo un algoritmo de hill climibing. Este m\'etodo de selecci\'on de variables depende de la performance resultante de aplicar a un conjunto de datos, $D$, un modelo $L$, evualuado sobre un subconjunto de atributos $S$. La vecindad de un subconjunto $s$ son todos los subconjuntos que se pueden contruir sacando de $s$ un \'unico elemento, o agregando a $s$ un \'unico elemento. Corrimos 50 procesos de hill climbing evaluando la perfomance en cada punto ejecutando un \'arbol de decisi\'on con cross validation 5-fold. Encontramos 50 \'optimos locales, sin repetici\'on. Las performance de los \'optimos locales estuvieron entre 0.88 y 0.96. Este proceso no fue suficiente para decidir por un \'unico subconjunto de atributos para la selecci\'on de atributos. 
+
+
 
 \subsection{PCA}
 
