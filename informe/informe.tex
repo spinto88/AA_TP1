@@ -18,6 +18,18 @@ Usamos conceptos del libro ``An Introduction to Statistical Learning''~\cite{jam
 
 \section{Extracci\'on de atributos}
 
+\par Identificamos 127 atributos para la clasificación del mail, los cuales constituyeron dos grupos: características del texto y palabras involucradas. Dentro de las características del texto elegimos:
+\begin{itemize}
+\item Largo del documento.
+\item Cantidad de espacios en blanco.
+\item Si el archivo contiene o no html.
+\item Si el mail es una respuesta.
+\item Cantidad de caracters no ASCII.
+\end{itemize}
+La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph{spam} es más probable que contenga un archivo \emph{html} y una mayor cantidad de caracteres no ASCII, como sucede en el empleo de idiomas que no sea el inglés. Por otro lado, en un mail etiquetado como \emph{ham} esperamos que tenga un largo menor que \emph{spam}, que haya grandes diferencias en el empleo de uso de espacios en blanco, y si el mail es una respuesta, probablemente provenga de una conversación entre dos usuarios reales.
+\par La elección de palabras involucradas se basó a su vez en dos criterios separados: por un lado incluimos un listado de palabras propuestas por los trabajos \cite{Gunal} y \cite{Vaughan}, que fueron catalogadas como buenas discriminadoras entre mails \emph{ham} y \emph{spam}, y por otro lado, mediante la librería de python \emph{nltk} (\cite{nltk}), extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. El atributo entonces elegido es la cantidad de veces que aparece una dada palabra en el texto.
+
+
 \begin{comment}
   \begin{figure}[H]
     \centering
@@ -29,9 +41,6 @@ Usamos conceptos del libro ``An Introduction to Statistical Learning''~\cite{jam
 \end{comment}
 
 \section{Modelos}
-
-\subsection{SVM}
-
 
 \subsection{DTC}
 
@@ -78,10 +87,9 @@ correspondiente de 0.982.
 El metodo Naive Bayes no resulto adecuado para este set de datos. El desempeño 
 sobre los datos de entrenamiento fue de tan solo 0.524.
 
-\subsection{NB}
+\subsection{SVM}
 
-
-\par Decidimos realizar el estudio en un principio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (CITAR!!!) vimos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los observados anteriormente. De un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C.
+\par Decidimos realizar el estudio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (\cite{sklearn}) observamos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los estudiados en las secciones anteriores. Por lo tanto, con un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C.
 
 \begin{figure}[H]
   \centering
@@ -91,6 +99,21 @@ sobre los datos de entrenamiento fue de tan solo 0.524.
   \end{subfigure}
   \label{fig:svm}
 \end{figure}
+
+\par Los tiempos de ejecución para cada kernel, promediados para los valores de $C$ empleados son los siguientes:
+\begin{table}
+\centering
+\caption{}
+\label{table:time_svm}
+\begin{tabular}{ll}
+Kernel & Tiempo (s) \\
+Linear & 1850 \\
+Poly (degree = 3) & 202 \\
+Rbf & 192 \\
+Sigmoid & 154 \\
+\end{tabular}
+\end{table}
+De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM para un los kernels \emph{linear} y \emph{poly} dan una muy buena eficacia, que el tiempo para \emph{linear} es mucho mayor que para \emph{poly}, pero que ambos casos, el tiempo de validación es claramente más alto que los otros métodos estudiados, aún al trabajar con un dataset acotado.
 
 (SI TERMINA;, VOY A PONER SVM CON C=1 Y KERNEL = POLY CON TODA LA DATA)
 
@@ -110,7 +133,8 @@ calculamos la matriz de covarianza de los atributos, y realizamos una descomposi
     \label{fig:autovalores}
   \end{figure}
 
-\par Los autovectores obtenidos de la factorización son una combinación lineal de los atributos elegidos originalmente. Dichos autovectores pueden ser tomados como nuevos atributos, los cuales, a partir de sus autovalores asociados, sabemos en cuáles hay una mayor variabilidad de los datos. Para dar una interpretación a los nuevos atributos, observamos la representación de los autovectores en el espacio de atributos originales. Como criterio, estudiamos qué componentes tienen un valor absoluto mayor a $0.1$ en el espacio de atributos originales. En la tabla \ref{table:autovectores} mostramos el resultado para las 5 direcciones principales. De la tabla vemos que los dos principales atributos coindicen con dos aitrutos originales, mientras los otros tres tienen un grupo de términos, de los cuales el 4 y 5 autovector muestran una correlación más visible entre los miembros del grupo.
+\par Los autovectores obtenidos de la factorización son una combinación lineal de los atributos elegidos originalmente. Dichos autovectores pueden ser tomados como nuevos atributos, los cuales, a partir de sus autovalores asociados, sabemos en cuáles hay una mayor variabilidad de los datos. 
+\par Para dar una interpretación a los nuevos atributos, observamos la representación de los autovectores en el espacio de atributos originales. Como criterio, estudiamos qué componentes tienen un valor absoluto mayor a $0.1$ en el espacio de atributos originales. En la tabla \ref{table:autovectores} mostramos el resultado para las 5 direcciones principales. De la tabla vemos que las dos direcciones principales prácticamente coindicen con dos de los atributos elegidos originalmente, asociados al formato del mail en cuestión. Los autovectores siguientes se constituyen de un grupo de términos, de los cuales el 4º y 5º autovector muestran una correlación en la terminología (o procedencia) de los miembros del grupo más visible que en el 3º autovector. 
 \begin{table}
 \centering
 \caption{}
