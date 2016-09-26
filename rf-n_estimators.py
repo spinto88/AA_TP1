@@ -9,7 +9,7 @@ import csv
 # Cargo el data Frame guardado como un archivo cPickle
 df = pk.load(file('DataFrame.pk'))
 
-clf = RFC()
+#clf = RFC()
 
 # X es una matriz de documentos x features
 X = df.ix[:, 2:].values

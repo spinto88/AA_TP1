@@ -13,3 +13,5 @@
 *.bbl
 *.backup
 *.npy
+*.Rnw
+*.pdf

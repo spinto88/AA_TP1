@@ -9,13 +9,13 @@ import csv
 # Cargo el data Frame guardado como un archivo cPickle
 df = pk.load(file('DataFrame.pk'))
 
-clf = RFC()
+clf = RFC(n_estimators=40)
 
 # X es una matriz de documentos x features
 X = df.ix[:, 2:].values
 y = df['class']
 
-n_estimators=160
+
 
 
 number_of_doc = X.shape[0]

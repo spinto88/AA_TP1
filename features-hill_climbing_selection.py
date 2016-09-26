@@ -34,17 +34,15 @@ for t in range(16):
 		f_ranking = pd.DataFrame([],columns=['f','score'])
 		f_ranking.set_index('f')
 		s_ranking = pd.DataFrame([],columns=['s','score'])
-		s_ranking.set_index('s')	
+		s_ranking.set_index('s')					
 		for f in F:
-			#i+=1
-			#f=F[i]
-			P = F
+			P=list(S)			
 			P.append(f)
 			scores = cross_val_score(clf, df.ix[:,P], y, cv = 2)
 			f_ranking.loc[f,'score'] =  np.mean(scores)
 		for s in S:
 			#s=S[1]
-			P = S
+			P = list(S)
 			P.remove(s)
 			scores = cross_val_score(clf, df.ix[:,P], y, cv = 2)
 			s_ranking.loc[s,'score'] =  np.mean(scores)
@@ -64,12 +62,12 @@ for t in range(16):
 		if new_perf >= old_perf:
 			if aumento: 
 				f_best = f_ranking.index[0]	
-				S.append([f_best])
-				F.remove([f_best])
+				S.append(f_best)
+				F.remove(f_best)
 			else: 
 				s_best = s_ranking.index[0]	
-				S.remove([s_best])
-				F.append([s_best])
+				S.remove(s_best)
+				F.append(s_best)
 			res_writer.writerow([S, np.mean(scores), np.std(scores)] )
 			print new_perf, S 
 		
