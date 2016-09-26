@@ -42,7 +42,7 @@ La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph
 
 \section{Modelos}
 
-\subsection{DTC}
+\subsection{Decision Tree Classifier. DTC.}
 
 \par Con la finalidad de escoger el mejor árbol de desición exploramos 
 el desempeño sobre los datos de entrenamiento en una grilla de híper-parámetros.
@@ -66,7 +66,7 @@ la relación funcional entre ambos.
   \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
-      \includegraphics[width=\textwidth]{../imagenes/desempeño-profundiad_arboles}
+      \includegraphics[width=\textwidth]{../imagenes/desempeno-profundiad_arboles}
       \caption{}
     \end{subfigure}
     \label{fig:autovalores}
@@ -79,15 +79,60 @@ prácticamente no crece. Para evitarnos posibles problemas de 'overfitting',
 decidimos limitar en 15 la profundidad de los árboles usados con un desempeño 
 correspondiente de 0.982.
 
-\subsection{DTC}
+\subsection{Naive Bayes. NB.}
+
+El m\'etodo Naive Bayes no result\'o adecuado para este set de datos. El desempeño 
+sobre los datos de entrenamiento fue de tan solo 0.524. 
 
 
-\subsection{NB}
+\todo[inline]{¿Por qu\'e creemos el desepeño de NB fue tan malo?. Gustavo: a mi se me ocurre que las variables son demasiado dependientes entre s\'i, lo cual \'indicar\'ia un problema con las variables que tomamos}
 
-El metodo Naive Bayes no resulto adecuado para este set de datos. El desempeño 
-sobre los datos de entrenamiento fue de tan solo 0.524.
 
-\subsection{SVM}
+\subsection{k-nearest neighbors. KNN}
+
+Probamos el m \'etodo de los vecinos m\'as cercanos. Para determinar la cantidad de vecinos \'optimo hicimos cross validation con 10-folds con 1,10,20,40,80,160,320,640 vecinos. Los resultados son los siguientes, 
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../imagenes/knn-n_neighbors}
+     \caption{}
+  \end{subfigure}
+  \label{fig:knn-n_neighbors}
+\end{figure}
+
+El desempeño m\'aximo, menor a 0.9, result\'o ser bajo en comporaci\'on con otro m\'etodos. Nos sorprendi\'o particularmente que la cantidad de vecinos \'optimo para este problema haya sido con un \'unico vecino. 
+
+\todo[inline]{¿Por qu\'e creemos que k=1 result\'o ser la cantidad \'optima de vecinos?. Gustavo: a mi se me ocurre que las variables no agrupan las instancias en espacios bien definidos, sino que se intercalan. Esto indicar\'ia que un problema con las variables que tomamos.}
+
+
+
+\subsection{Random Forest. RF.}
+
+Los \'arboles generados. 
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../imagenes/rf_estimators}
+     \caption{}
+  \end{subfigure}
+  \label{fig:rf_estimators}
+\end{figure}
+
+Con 40 \'arboles probamos el desempeño 
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../imagenes/rf}
+     \caption{}
+  \end{subfigure}
+  \label{fig:rf}
+\end{figure}
+
+
+\subsection{Suport Vector Machine. SVM.}
 
 \par Decidimos realizar el estudio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (\cite{sklearn}) observamos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los estudiados en las secciones anteriores. Por lo tanto, con un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C.
 
@@ -118,6 +163,25 @@ De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM p
 (SI TERMINA;, VOY A PONER SVM CON C=1 Y KERNEL = POLY CON TODA LA DATA)
 
 \section{Reducci\'on de dimensionalidad}
+
+\subsection{Features Ranking}
+
+Evaluamos la ganancia de cada variable individualmente y obtuvimos el siguiente ranking. 
+
+  \begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+      \includegraphics[width=\textwidth]{../imagenes/features_ranking}
+      \caption{}
+    \end{subfigure}
+    \label{fig:features_ranking}
+  \end{figure}
+
+Este m\'etodo considera la dependecia de las variables. 
+
+\subsection{Hill climbing}
+
+\todo[inline]{Ya subí los optimos locales a la carpeta resultados/ . Tengo que evaluar que pas\'o. }
 
 \subsection{PCA}
 
