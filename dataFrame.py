@@ -83,6 +83,6 @@ pk.dump(df, file('DataFrame.pk','w'))
 X = df.ix[:,2:].values  # ix sirve para indexar las columnas con enteros
 y = df['class']
 
-np.save('X_poca_data.npy', X)
-np.save('y_poca_data.npy', y)
+np.save('X.npy', X)
+np.save('y.npy', y)
 

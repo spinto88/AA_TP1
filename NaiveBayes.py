@@ -4,7 +4,7 @@ import numpy as np
 
 y = np.load('y.npy')
 
-for fact in 'original',: #[5,10,20,30,40,120,'original']:
+for fact in [5,10,20,30,40,120,'original']:
 
     try:
         X = np.load('X_red' + str(fact) + '.npy')
