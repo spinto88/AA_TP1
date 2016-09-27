@@ -29,7 +29,6 @@ for fact in range(1,128): #[5,10,20,30,40,120,'original']:
     clf = DTC(criterion='gini', splitter='best', max_depth=15)
     res = cross_val_score(clf, X, y, cv=10)
     perf_PCA.append(np.mean(res))
-    
 plt.plot(perf_PCA, lw=2)
 plt.xlabel('Numero de componentes')
 plt.ylabel('Desempeno (sobre datos entrenamiento)')
