@@ -2,7 +2,6 @@
 *.pk
 *.json
 *.pyc
-*.zip
 *swp
 *.csv
 *~
