@@ -12,7 +12,13 @@ Sebasti\'an Pinto, Guillermo Pasqualetti, Gustavo Landfried}
 
 \section{Introducci\'on}
 
-Para resolver este este trabajo pr\'actico usamos el lenguaje de progrmaci\'on \emph{python}. Para la extracci \'on de atributos \ref{sec:extraccion} implementamos nuestros propios algoritmos y tomamos atributos de dos art\'iculos cient\'ificos \cite{Gunal} y \cite{Vaughan}. Los clasificadores (tree, naive bayes, k-nearest neighbors, random forest y support vector machine) y la validaci\'on cruzada que usamos para explorar modelos \ref{sec:modelos} fueron importados de la biblioteca \emph{scikit-learn}\cite{sklearn}. Para seleccionar atributos \ref{sec:seleccion} implementamos el ranking de ganancia de informaci\'on de atributos y la b\'usqueda de optimos locales mediante hill climbing. La descomposición en valores singulares (svd) fue importada de la librería \emph{scipy.linalg}\cite{scipy}. Fueron \'utiles los conceptos del libro ``An Introduction to Statistical Learning''~\cite{james_hastie_tibshirani}.
+\par LLevamos a cabo un análisis de distintos clasificadores automáticos de mails entre las categorías \emph{ham} y \emph{spam}. Los clasificadores son modelos matemáticos que, dada una base de datos compuesta por documentos preclasificados, son capaces de predecir la categoría de un nuevo documento. 
+\par Para llevar a cabo esta tarea, fue necesaria la elección de ciertos atributos o características identificatorias de cada documento, junto con su categoría, que constituyen la base de datos de entrenamiento del clasificador. Una vez transformada la base de datos en un conjunto de atributos por documento, exploramos diferentes modelos buscando la mejor performance. A su vez, estudiamos algunas técnicas de reducción de dimensionalidad para acotar la cantidad de atributos elegidos inicialmente.
+\par La base de datos original consistió en 90000 \emph{mails}, los cuales el 50\% pertenecía a la categoría \emph{ham}, y el resto a la categoría \emph{spam}.
+
+\subsection{Metodología}
+
+\par Para la resolución de este trabajo utilizamos el lenguaje de progrmaci\'on \emph{python}. Para la extracci \'on de atributos \ref{sec:extraccion} implementamos nuestros propios algoritmos y tomamos atributos de dos art\'iculos cient\'ificos \cite{Gunal} y \cite{Vaughan}. Los clasificadores (tree, naive bayes, k-nearest neighbors, random forest y support vector machine) y la validaci\'on cruzada que usamos para explorar modelos \ref{sec:modelos} fueron importados de la biblioteca \emph{scikit-learn}\cite{sklearn}. Para seleccionar atributos \ref{sec:seleccion} implementamos el ranking de ganancia de informaci\'on de atributos y la b\'usqueda de optimos locales mediante hill climbing. La descomposición en valores singulares (SVD) fue importada de la librería \emph{scipy.linalg}\cite{scipy}. Fueron \'utiles los conceptos del libro ``An Introduction to Statistical Learning''~\cite{james_hastie_tibshirani}.
 
 \section{Extracci\'on de atributos} \label{sec:extraccion}
 
@@ -33,12 +39,8 @@ La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph
 \item Palabras reportadas en dos papers \cite{Gunal} y \cite{Vaughan}. 
 \end{itemize}
 
-En primer lugar extrajimos las palabras m\'as frecuentes en \emph{spam} y \emph{ham}. Para obtener variables representativas de cada clase nos quedamos unicamente con la diferencia sim\'etrica. De ellas extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. El atributo entonces elegido es la cantidad de veces que aparece una string dado en el texto. 
-
+En primer lugar extrajimos las palabras m\'as frecuentes en \emph{spam} y \emph{ham}. Para obtener variables representativas de cada clase nos quedamos unicamente con la diferencia sim\'etrica. De ellas extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. Para la realización de esta tarea utilizamos la librería de python \emph{nltk} (\cite{nltk}). El atributo entonces elegido es la cantidad de veces que aparece una string dado en el texto. 
 A su vez incluimos un listado de palabras propuestas por los trabajos \cite{Gunal} y \cite{Vaughan} que fueron catalogadas como buenas discriminadoras entre mails \emph{ham} y \emph{spam}. 
-
-
-\todo[inline]{La biblioteca nltk no la veo ni en el archivo ``analisisWords'' ni en ``dataFrame''. ¿D\'onde usamos eso?. La saqu\'e la cita a esa biblioteca del informe.}
 
 \section{Modelos} \label{sec:modelos}
 
@@ -125,7 +127,7 @@ La cantidad m\'axima de atributos $a$ que se utiliza en cada iteraci\'on la deja
 
 \subsection{Suport Vector Machine. SVM.}
 
-\par Decidimos realizar el estudio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (\cite{sklearn}) observamos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los estudiados en las secciones anteriores. Por lo tanto, con un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C.
+\par Decidimos realizar el estudio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (\cite{sklearn}) observamos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los estudiados en las secciones anteriores. Por lo tanto, con un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C, que constituye un valor de tolerancia ante datos mal clasificados.
 
 \begin{figure}[H]
   \centering
@@ -133,14 +135,13 @@ La cantidad m\'axima de atributos $a$ que se utiliza en cada iteraci\'on la deja
     \includegraphics[width=\textwidth]{../imagenes/SVM}
     
   \end{subfigure}
-    \caption{}
+    \caption{Eficacia de SVM para distintos kernels y valores de C, para un subconjunto de datos.}
   \label{fig:svm}
 \end{figure}
 
 \par Los tiempos de ejecución para cada kernel, promediados para los valores de $C$ empleados son los siguientes:
 \begin{table}[H]
 \centering
-\caption{}
 \label{table:time_svm}
 \begin{tabular}{ll}
 Kernel & Tiempo (s) \\
@@ -149,6 +150,7 @@ Poly (degree = 3) & 202 \\
 Rbf & 192 \\
 Sigmoid & 154 \\
 \end{tabular}
+\caption{Tiempo de validación de SVM, para distintos kernels.}
 \end{table}
 De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM para un los kernels \emph{linear} y \emph{poly} dan una muy buena eficacia, que el tiempo para \emph{linear} es mucho mayor que para \emph{poly}, pero que ambos casos, el tiempo de validación es claramente más alto que los otros métodos estudiados, aún al trabajar con un dataset acotado.
 
@@ -191,7 +193,7 @@ calculamos la matriz de covarianza de los atributos, y realizamos una descomposi
     \begin{subfigure}[b]{0.4\textwidth}
       \includegraphics[width=\textwidth]{../imagenes/Autovalores}
     \end{subfigure}
-    \caption{}
+    \caption{Valor de los autovalores surgidos de la descomposición SVD, ordenados de derecha a izquierda.}
     \label{fig:autovalores}
   \end{figure}
 
@@ -212,18 +214,12 @@ Autovector & Componentes principales \\
 \end{table}
 
 
-\section{Resultados}
-
-En esta secci\'on comparamos la performance de los diferentes modelos. Encontramos que el m\'ejor es SVM y en segundo lugar random forest.   \\
-
-\todo[inline]{¿Cu\'ales son los resultados?. Me parece que los resultados los fuimos reportando a medida una parte en la secci\'on ``modelos'' y otra en la secci\'on ``reducci\'on de dimensionalidad''. Por eso puse los resultados finales todos juntos en esta secci\'on. No guradamos un subconjunto de datos para test. }
-
-\section{trees + PCA}
+\subsubsection{trees + PCA}
 
 \todo[inline]{Probar tree con 5 10 20 , 40 80 y 127 variables }
 
 
-\subsection{Naive Bayes + PCA}\label{sec:NB_PCA}
+\subsubsection{Naive Bayes + PCA}\label{sec:NB_PCA}
 
 \par El método de Naive Bayes no resultó satisfactorio para el dataset original, como reportamos en la sección \ref{sec:NB}. La principal hipótesis de tan mal desempeño, fue el hecho de que Naive Bayes suponga que los atributos son independientes entre sí. Por lo tanto, esperabamos que con los nuevos atributos obtenidos mediante la técnica PCA, el método funcione mejor, debido a que dichos atributos se construyen al pedir ortogonalidad entre los mismos, resultando en atributos más descorrelacionados que los atributos originales entre sí. En la tabla \ref{table:NB} reportamos los valores de eficacia, donde prácticamente no se ven diferencias en tomar un subconjunto de atributos surgidos de PCA y el desempeño original. \footnote{Cuando estudiamos el caso de Naive-Bayes con el dataset original, encontramos grandes diferencias en los resultados obtenidos, según en qué ordenador corríamos el script. El problema estaba en una diferencia de versiones de la librería \emph{scikit-learn}. Los resultados reportados se corresponden con la versión 0.17.1.}
 
@@ -241,7 +237,7 @@ original & 0.52 & 0.01 \\
 \end{tabular}
 \end{table}
 
-\section{knn + PCA}
+\subsubsection{knn + PCA}
 
 A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantidad de vecinos \'optimo es $k=1$. En la siguiente figura se muestra el resultado con $k=1$ y $k=10$ al aumentando la cantidad de atributos que se utilizan para clasificar.  
 
@@ -254,7 +250,7 @@ A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantid
   \label{fig:knn-n_neighbors}
 \end{figure}
 
-\section{random forest + PCA}
+\subsubsection{random forest + PCA}
 
 Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de coordenadas, $v \in \{5,10,20,40,127\}$
 
@@ -268,9 +264,15 @@ Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de
   \label{fig:rf}
 \end{figure}
 
-\section{SVM + PCA}
+\subsubsection{SVM + PCA}
 
 \todo[inline]{Probar SVM poly con 10000 datos con 5 10 20 y 40 variables}
+
+\section{Resultados y conclusiones}
+
+\par Luego de analizar diferentes modelos, concluimos que los métodos que mostraron una mejor performance para el conjunto de atributos son SVM y Random Forest, teniendo el último un tiempo de validación y entrenamiento considerablemente menor que el primero.
+\par La generación de nuevos atributos mediante la reducción de dimensionalidad con técnicas tales como PCA, no supuso una mejora significante en el balance entre tiempo de ejecución y eficacia de los modelos. 
+\par Por otro lado, vale destacar que los resultados reportados corresponden de realizar un promedio de los rendimientos obtenidos al hacer \emph{cross-fold validation}, por lo que somos concientes que podemos estar realizando un \emph{over-fitting} sobre los datos analizados, y la perfomance de los modelos, ante una base de datos nueva, puede diferir de la predicha en este trabajo.
 
 \section{Discusi\'on}
 
