@@ -5,24 +5,28 @@ from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 from time import time
 
-
-# Cargo el data Frame guardado como un archivo cPickle
-#df = pk.load(file('DataFrame.pk'))
+"""
+Calculo del score para SVM con distintos kernels
+y valores de C.
+Para el calculo de SVM la matrix de X con que tomamos
+solo contenia 10000 mails (mitad ham, mitad spam)
+"""
 
 # X es una matriz de documentos x features
 X = np.load('X.npy')
 y = np.load('y.npy')
 
-C = 1.00
-kernel = 'poly'
+for C in [0.1, 1.00, 10.0, 100.0]:
 
-ti = int(time())
+    for kernel in ['linear','poly','rbf','sigmoid']:
 
-clf = SVC(kernel = kernel, C = C, cache_size = 2048)
+        ti = int(time())
 
-scores = cross_val_score(clf, X, y, cv = 10)
+        clf = SVC(kernel = kernel, C = C, cache_size = 2048)
 
-fp = open('Svm.txt','a')
-fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
-fp.close()
+        scores = cross_val_score(clf, X, y, cv = 10)
+
+        fp = open('Svm.txt','a')
+        fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
+        fp.close()
     

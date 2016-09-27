@@ -5,23 +5,29 @@ from sklearn.cross_validation import cross_val_score
 import matplotlib.pyplot as plt
 from time import time
 
-# X es una matriz de documentos x features
-X = np.load('X_red5.npy')
-y = np.load('y.npy')
+y = np.load('y_acotada.npy')
 
-for C in [1.00, 0.1, 100.0, 10.00]:
+C = 1.00
+kernel = 'poly'
 
-    for kernel in ['linear', 'poly', 'rbf', 'sigmoid']:
+for number_of_factors in [5, 20, 40, 'original']:
 
-        ti = int(time())
+    ti = int(time())
 
-        clf = SVC(kernel = kernel, C = C)
-        scores = cross_val_score(clf, X, y, cv = 10)
+    try:
+        X = np.load('X_red' + str(number_of_factors) + '.npy')
+    except:
+        X = np.load('X_acotada.npy')
 
-        tf = int(time()-ti)
+    clf = SVC(kernel = kernel, C = C)
+    scores = cross_val_score(clf, X, y, cv = 10)
 
-        fp = open('Svm_red.txt','a')
-        fp.write(str(C) + '\t' + kernel + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
-        fp.close()
+    tf = int(time()-ti)
+
+    print np.mean(scores), tf
+
+    fp = open('Svm_red_2.txt','a')
+    fp.write(str(number_of_factors) + '\t' + str(np.mean(scores)) + '\t' + str(np.std(scores)) + '\t' + str(tf) + '\n')
+    fp.close()
     
 
