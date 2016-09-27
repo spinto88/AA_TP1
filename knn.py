@@ -71,4 +71,3 @@ for eigs in [5, 10, 20, 40,80,127]:
     scores = cross_val_score(clf, X_reduce, y, cv = 10)
     res_writer.writerow([eigs, np.mean(scores), np.std(scores)] )
     print 'Eig: ', number_of_eig, ' - score: ', np.mean(scores), np.std(scores)
-    

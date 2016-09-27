@@ -42,6 +42,8 @@ A su vez incluimos un listado de palabras propuestas por los trabajos \cite{Guna
 
 \section{Modelos} \label{sec:modelos}
 
+En esta secci\'on discutimos los distintos modelos disponibles y evaluamos algunos de sus par\'ametros.  
+
 \subsection{Decision Tree Classifier. DTC.}
 
 \par Con la finalidad de escoger el mejor árbol de desición exploramos 
@@ -104,27 +106,21 @@ El desempeño m\'aximo fue menor a $0,9$ y result\'o ser bajo en comparaci\'on c
 
 \subsection{Random Forest. RF.}
 
-Los \'arboles generados. 
+Para determinar la cantidad de \'arboles que genera cada random forest, probamos el rendimiento de la validaci\'on cruzada 10-fold con $t$ \'arboles $t \in \{1,5,10,20,40,80,160,320,640\}$
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{../imagenes/rf_estimators}
-     \caption{}
+     
   \end{subfigure}
+   \caption{}
   \label{fig:rf_estimators}
 \end{figure}
 
-Con 40 \'arboles probamos el desempeño 
+40 \'arboles parecen ser suficiente para optimizar el m\'etodo random forest.  
 
-\begin{figure}[H]
-  \centering
-  \begin{subfigure}[b]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{../imagenes/rf}
-     \caption{}
-  \end{subfigure}
-  \label{fig:rf}
-\end{figure}
+La cantidad m\'axima de atributos $a$ que se utiliza en cada iteraci\'on la dejamos con su valor por defecto $a = \sqrt(|A|)$. En el libro ``An Introduction to Statistical Learning''~\cite{james_hastie_tibshirani} se discute ese tema y se concluye que es una valor bueno en general. 
 
 
 \subsection{Suport Vector Machine. SVM.}
@@ -135,8 +131,9 @@ Con 40 \'arboles probamos el desempeño
   \centering
   \begin{subfigure}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{../imagenes/SVM}
-     \caption{}
+    
   \end{subfigure}
+    \caption{}
   \label{fig:svm}
 \end{figure}
 
@@ -158,6 +155,8 @@ De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM p
 
 \section{Reducci\'on de dimensionalidad} \label{sec:seleccion}
 
+En esta secci\'on implementamos varios m\'etodos de reducci\'on de dimensionalidad. Optamos por la descomposición en valores singulares (svd) para seleccionar atributos. 
+
 \subsection{Features Ranking}
 
 Evaluamos la ganancia de cada variable individualmente y obtuvimos el siguiente ranking. 
@@ -166,8 +165,9 @@ Evaluamos la ganancia de cada variable individualmente y obtuvimos el siguiente 
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
       \includegraphics[width=\textwidth]{../imagenes/features_ranking}
-      \caption{}
+     
     \end{subfigure}
+      \caption{}
     \label{fig:features_ranking}
   \end{figure}
 
@@ -190,8 +190,8 @@ calculamos la matriz de covarianza de los atributos, y realizamos una descomposi
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
       \includegraphics[width=\textwidth]{../imagenes/Autovalores}
-      \caption{}
     \end{subfigure}
+    \caption{}
     \label{fig:autovalores}
   \end{figure}
 
@@ -211,7 +211,19 @@ Autovector & Componentes principales \\
 \end{tabular}
 \end{table}
 
-\subsubsection{Naive Bayes + PCA}\label{sec:NB_PCA}
+
+\section{Resultados}
+
+En esta secci\'on comparamos la performance de los diferentes modelos. Encontramos que el m\'ejor es SVM y en segundo lugar random forest.   \\
+
+\todo[inline]{¿Cu\'ales son los resultados?. Me parece que los resultados los fuimos reportando a medida una parte en la secci\'on ``modelos'' y otra en la secci\'on ``reducci\'on de dimensionalidad''. Por eso puse los resultados finales todos juntos en esta secci\'on. No guradamos un subconjunto de datos para test. }
+
+\section{trees + PCA}
+
+\todo[inline]{Probar tree con 5 10 20 , 40 80 y 127 variables }
+
+
+\subsection{Naive Bayes + PCA}\label{sec:NB_PCA}
 
 \par El método de Naive Bayes no resultó satisfactorio para el dataset original, como reportamos en la sección \ref{sec:NB}. La principal hipótesis de tan mal desempeño, fue el hecho de que Naive Bayes suponga que los atributos son independientes entre sí. Por lo tanto, esperabamos que con los nuevos atributos obtenidos mediante la técnica PCA, el método funcione mejor, debido a que dichos atributos se construyen al pedir ortogonalidad entre los mismos, resultando en atributos más descorrelacionados que los atributos originales entre sí. En la tabla \ref{table:NB} reportamos los valores de eficacia, donde prácticamente no se ven diferencias en tomar un subconjunto de atributos surgidos de PCA y el desempeño original. \footnote{Cuando estudiamos el caso de Naive-Bayes con el dataset original, encontramos grandes diferencias en los resultados obtenidos, según en qué ordenador corríamos el script. El problema estaba en una diferencia de versiones de la librería \emph{scikit-learn}. Los resultados reportados se corresponden con la versión 0.17.1.}
 
@@ -229,10 +241,6 @@ original & 0.52 & 0.01 \\
 \end{tabular}
 \end{table}
 
-\section{Resultados}
-
-\todo[inline]{¿Cu\'ales son los resultados?. Me parece que los resultados los fuimos reportando a medida una parte en la secci\'on ``modelos'' y otra en la secci\'on ``reducci\'on de dimensionalidad''. En ese caso habr\'ia que restructurar la iunformaci\'on. No guradamos un subconjunto de datos para test. }
-
 \section{knn + PCA}
 
 A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantidad de vecinos \'optimo es $k=1$. En la siguiente figura se muestra el resultado con $k=1$ y $k=10$ al aumentando la cantidad de atributos que se utilizan para clasificar.  
@@ -246,9 +254,27 @@ A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantid
   \label{fig:knn-n_neighbors}
 \end{figure}
 
+\section{random forest + PCA}
+
+Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de coordenadas, $v \in \{5,10,20,40,127\}$
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../imagenes/rf}
+     
+  \end{subfigure}
+  \caption{}
+  \label{fig:rf}
+\end{figure}
+
+\section{SVM + PCA}
+
+\todo[inline]{Probar SVM poly con 10000 datos con 5 10 20 y 40 variables}
+
 \section{Discusi\'on}
 
-Varios hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, aparentemente aislados, pensamos que pueden ser en realidad un \'indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados son
+Algunos hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, que al principio nos parec\'ian eventos aislados, pensamoq que pueden ser considerados en realidad como un \'indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados ser\'ian
 
 \begin{itemize}
  \item La baja performance de \emph{naive bayes}. 
@@ -256,13 +282,15 @@ Varios hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'a
  \item La variedad de \'optimos locales al realizar \emph{hill climbing}. 
 \end{itemize}
 
+Hoy suponemos que la baja performance de naive bayes se debe a una fuerte dependencia entre los atributos. A su vez pensamos que la cantidad de vecinos \'optimo para knn sea un \'unico vecino podr\'ia estar indicando que los datos no est\'an bien separados en el espacio, es decir, que los atributos no distinguen con suficentemente claridad una clase de otra. Finalmente, la variedad de \'optimos locales sospechamos que se debe a la alta correlaci\'on entre los datos. 
 
+Algunas que se podr\'ian mejorar para la extracci\'on de atriutos 
 
-Nos sorprendi\'o particularmente que la cantidad de vecinos \'optimo para este problema haya sido con un \'unico vecino. 
-
-
-
-\todo[inline]{¿Por qu\'e creemos que k=1 result\'o ser la cantidad \'optima de vecinos?. Gustavo: a mi se me ocurre que las variables no agrupan las instancias en espacios bien definidos, sino que se intercalan. Esto indicar\'ia que un problema con las variables que tomamos.}
+\begin{itemize}
+ \item Sacar el encabezado del mail para la selecci\'on de palabras. 
+ \item Sacar el html para la selecci\'on de palabras. 
+ \item Estandarizar los string de tipo archivo adjunto (m\'as de tres aaa) como una \'unica variable 
+\end{itemize}
 
 
 
