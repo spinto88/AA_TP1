@@ -248,9 +248,16 @@ Máxima profundidad: 15
 Criterio: Gini
 Splitter: Best
 
-La figura siguiente muestra el desempeño en función del número de componentes.
+La figura siguiente \comparb muestra el desempeño en función del número de componentes.
 
-Intertar figura "desempeño_vs_componentes_arboles" porfa.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+      \includegraphics[width=\textwidth]{../imagenes/desempeño_vs_componentes_arboles.png}
+    \end{subfigure}
+    \caption{}
+    \label{fig:comparb}
+\end{figure}
 
 Como esperabamos, el desempeño crece abruptamente al comienzo para luego hacerlo en forma moderada hasta la componente 43 cuando se alcanza prácticamente el valor máximo. Parece entonces ser esa una cantidad adecuada de componentes a considerar.
 
