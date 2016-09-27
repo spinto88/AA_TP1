@@ -132,8 +132,7 @@ La cantidad m\'axima de atributos $a$ que se utiliza en cada iteraci\'on la deja
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{../imagenes/SVM}
-    
+    \includegraphics[width=\textwidth]{../imagenes/SVM}    
   \end{subfigure}
     \caption{Eficacia de SVM para distintos kernels y valores de C, para un subconjunto de datos.}
   \label{fig:svm}
@@ -142,7 +141,6 @@ La cantidad m\'axima de atributos $a$ que se utiliza en cada iteraci\'on la deja
 \par Los tiempos de ejecución para cada kernel, promediados para los valores de $C$ empleados son los siguientes:
 \begin{table}[H]
 \centering
-\label{table:time_svm}
 \begin{tabular}{ll}
 Kernel & Tiempo (s) \\
 Linear & 1850 \\
@@ -151,6 +149,7 @@ Rbf & 192 \\
 Sigmoid & 154 \\
 \end{tabular}
 \caption{Tiempo de validación de SVM, para distintos kernels.}
+\label{table:time_svm}
 \end{table}
 De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM para un los kernels \emph{linear} y \emph{poly} dan una muy buena eficacia, que el tiempo para \emph{linear} es mucho mayor que para \emph{poly}, pero que ambos casos, el tiempo de validación es claramente más alto que los otros métodos estudiados, aún al trabajar con un dataset acotado.
 
@@ -201,7 +200,6 @@ calculamos la matriz de covarianza de los atributos, y realizamos una descomposi
 \par Para dar una interpretación a los nuevos atributos, observamos la representación de los autovectores en el espacio de atributos originales. Como criterio, estudiamos qué componentes tienen un valor absoluto mayor a $0.1$ en el espacio de atributos originales. En la tabla \ref{table:autovectores} mostramos el resultado para las 5 direcciones principales. De la tabla vemos que las dos direcciones principales prácticamente coindicen con dos de los atributos elegidos originalmente, asociados al formato del mail en cuestión. Los autovectores siguientes se constituyen de un grupo de términos, de los cuales el 4º y 5º autovector muestran una correlación en la terminología (o procedencia) de los miembros del grupo más visible que en el 3º autovector. 
 \begin{table}
 \centering
-\caption{}
 \label{table:autovectores}
 \begin{tabular}{ll}
 Autovector & Componentes principales \\
@@ -211,6 +209,7 @@ Autovector & Componentes principales \\
 4 & Términos: x-origin, x-filename, x-cc, binary \\
 5 & Términos: receive, email, upgrade, fast, spam \\
 \end{tabular}
+\caption{Principales componentes de los autovectores surgidos de PCA}
 \end{table}
 
 
@@ -266,27 +265,27 @@ Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de
 
 \subsubsection{SVM + PCA}
 
-\todo[inline]{Probar SVM poly con 10000 datos con 5 10 20 y 40 variables}
+\par Estudiamos el caso de SVM con kernel polinomial y variables reducidas, sin embargo el tiempo de ejecución se incrementó significativamente respecto al caso de tomar todas los atributos originales, por lo que descartamos que sea una mejora para este modelo.
 
 \section{Resultados y conclusiones}
 
 \par Luego de analizar diferentes modelos, concluimos que los métodos que mostraron una mejor performance para el conjunto de atributos son SVM y Random Forest, teniendo el último un tiempo de validación y entrenamiento considerablemente menor que el primero.
 \par La generación de nuevos atributos mediante la reducción de dimensionalidad con técnicas tales como PCA, no supuso una mejora significante en el balance entre tiempo de ejecución y eficacia de los modelos. 
-\par Por otro lado, vale destacar que los resultados reportados corresponden de realizar un promedio de los rendimientos obtenidos al hacer \emph{cross-fold validation}, por lo que somos concientes que podemos estar realizando un \emph{over-fitting} sobre los datos analizados, y la perfomance de los modelos, ante una base de datos nueva, puede diferir de la predicha en este trabajo.
+\par Por otro lado, vale destacar que los resultados reportados corresponden de realizar un promedio de los rendimientos obtenidos al hacer \emph{cross-fold validation}, por lo que somos concientes que podemos estar realizando un \emph{over-fitting} sobre los datos analizados, y la perfomance de los modelos ante una base de datos nueva puede diferir de la predicha en este trabajo.
 
 \section{Discusi\'on}
 
-Algunos hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, que al principio nos parec\'ian eventos aislados, pensamoq que pueden ser considerados en realidad como un \'indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados ser\'ian
+Algunos hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, que al principio nos parec\'ian eventos aislados, pensamos que pueden ser considerados en realidad como un \'indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados ser\'ian
 
 \begin{itemize}
  \item La baja performance de \emph{naive bayes}. 
- \item El cantidad de vecinos \'optimo para determinar la lcase mediante \emph{KNN} igual a 1. 
+ \item El cantidad de vecinos \'optimo para determinar la clase mediante \emph{KNN} igual a 1. 
  \item La variedad de \'optimos locales al realizar \emph{hill climbing}. 
 \end{itemize}
 
 Hoy suponemos que la baja performance de naive bayes se debe a una fuerte dependencia entre los atributos. A su vez pensamos que la cantidad de vecinos \'optimo para knn sea un \'unico vecino podr\'ia estar indicando que los datos no est\'an bien separados en el espacio, es decir, que los atributos no distinguen con suficentemente claridad una clase de otra. Finalmente, la variedad de \'optimos locales sospechamos que se debe a la alta correlaci\'on entre los datos. 
 
-Algunas que se podr\'ian mejorar para la extracci\'on de atriutos 
+Algunas que se podr\'ian mejorar para la extracci\'on de atributos 
 
 \begin{itemize}
  \item Sacar el encabezado del mail para la selecci\'on de palabras. 
