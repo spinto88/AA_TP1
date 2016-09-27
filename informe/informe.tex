@@ -12,27 +12,35 @@ Sebasti\'an Pinto, Guillermo Pasqualetti, Gustavo Landfried}
 
 \section{Introducci\'on}
 
-Usamos el lenguaje de progrmaci\'on python. 
+Para resolver este este trabajo pr\'actico usamos el lenguaje de progrmaci\'on \emph{python}. Para la extracci \'on de atributos \ref{sec:extraccion} implementamos nuestros propios algoritmos y tomamos atributos de dos art\'iculos cient\'ificos \cite{Gunal} y \cite{Vaughan}. Los clasificadores (tree, naive bayes, k-nearest neighbors, random forest y support vector machine) y la validaci\'on cruzada que usamos para explorar modelos \ref{sec:modelos} fueron importados de la biblioteca \emph{scikit-learn}\cite{sklearn}. Para seleccionar atributos \ref{sec:seleccion} implementamos el ranking de ganancia de informaci\'on de atributos y la b\'usqueda de optimos locales mediante hill climbing. La descomposición en valores singulares (svd) fue importada de la librería \emph{scipy.linalg}\cite{scipy}. Fueron \'utiles los conceptos del libro ``An Introduction to Statistical Learning''~\cite{james_hastie_tibshirani}.
 
-Usamos conceptos del libro ``An Introduction to Statistical Learning''~\cite{james_hastie_tibshirani}.
-
-\section{Extracci\'on de atributos}
+\section{Extracci\'on de atributos} \label{sec:extraccion}
 
 \par Identificamos 127 atributos para la clasificación del mail, los cuales constituyeron dos grupos: características del texto y palabras involucradas. Dentro de las características del texto elegimos:
 \begin{itemize}
-\item La diferencia sim\'etrica de los conjuntos de palabras m\'as frecuentes en \emph{spam} y \emph{ham}
-\item Palabras reportadas en dos papers \cite{Gunal} y \cite{Vaughan}. 
 \item Largo del documento.
 \item Cantidad de espacios en blanco.
 \item Si el archivo contiene o no html.
 \item Si el mail es una respuesta.
 \item Cantidad de caracters no ASCII.
 \end{itemize}
+
 La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph{spam} es más probable que contenga un archivo \emph{html} y una mayor cantidad de caracteres no ASCII, como sucede en el empleo de idiomas que no sea el inglés. Por otro lado, en un mail etiquetado como \emph{ham} esperamos que tenga un largo menor que \emph{spam}, que haya grandes diferencias en el empleo de uso de espacios en blanco, y si el mail es una respuesta, probablemente provenga de una conversación entre dos usuarios reales.
-\par La elección de palabras involucradas se basó a su vez en dos criterios separados: por un lado incluimos un listado de palabras propuestas por los trabajos \cite{Gunal} y \cite{Vaughan}, que fueron catalogadas como buenas discriminadoras entre mails \emph{ham} y \emph{spam}, y por otro lado, mediante la librería de python \emph{nltk} (\cite{nltk}), extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. El atributo entonces elegido es la cantidad de veces que aparece una dada palabra en el texto.
+
+\par La elección de palabras involucradas se basó a su vez en dos criterios separados: 
+\begin{itemize}
+ \item La diferencia sim\'etrica de los conjuntos de palabras m\'as frecuentes en \emph{spam} y \emph{ham}
+\item Palabras reportadas en dos papers \cite{Gunal} y \cite{Vaughan}. 
+\end{itemize}
+
+En primer lugar extrajimos las palabras m\'as frecuentes en \emph{spam} y \emph{ham}. Para obtener variables representativas de cada clase nos quedamos unicamente con la diferencia sim\'etrica. De ellas extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. El atributo entonces elegido es la cantidad de veces que aparece una string dado en el texto. 
+
+A su vez incluimos un listado de palabras propuestas por los trabajos \cite{Gunal} y \cite{Vaughan} que fueron catalogadas como buenas discriminadoras entre mails \emph{ham} y \emph{spam}. 
 
 
-\section{Modelos}
+\todo[inline]{La biblioteca nltk no la veo ni en el archivo ``analisisWords'' ni en ``dataFrame''. ¿D\'onde usamos eso?. La saqu\'e la cita a esa biblioteca del informe.}
+
+\section{Modelos} \label{sec:modelos}
 
 \subsection{Decision Tree Classifier. DTC.}
 
@@ -42,9 +50,9 @@ De entre el total de híper-parametros del modelo decidimos profundizar sobre
 tres que nos parecieron especialmente relevantes:
 \begin{itemize}
  \item Profundidad máxima [Valor entero]: Máxima profundidad del árbol de desición. 
- \item Criterio Gini Impurity  Information Gain: función que mide la cualidad 
+ \item Criterio [Gini Impurity/Information Gain]: función que mide la cualidad 
 del ``split''. 
-  \item Splitter Best  Random: estrategia usada para elegir el mejor 
+  \item Splitter [Best/Random]: estrategia usada para elegir el mejor 
 ``split'' en cada nodo.
 \end{itemize}
 
@@ -59,14 +67,14 @@ la relación funcional entre ambos.
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
       \includegraphics[width=\textwidth]{../imagenes/desempeno-profundiad_arboles}
-      \caption{}
     \end{subfigure}
+    \caption{}
     \label{fig:autovalores}
   \end{figure}
 
 
-Vemos que el desempeño presenta una fuerte mejora con la profundidad máxima 
-permitida al árbol hasta profundidades de 15 a 20 niveles. Luego el desempeño 
+Vemos que el desempeño presenta una fuerte mejora a medida que se aumenta la profundidad máxima 
+permitida del árbol hasta profundidades de 15 a 20 niveles. Luego el desempeño 
 prácticamente no crece. Para evitarnos posibles problemas de 'overfitting', 
 decidimos limitar en 15 la profundidad de los árboles usados con un desempeño 
 correspondiente de 0.982.
@@ -81,22 +89,18 @@ sobre este método, buscando mejorar su eficacia.
 
 \subsection{k-nearest neighbors. KNN}
 
-Probamos el m \'etodo de los vecinos m\'as cercanos. Para determinar la cantidad de vecinos \'optimo hicimos cross validation con 10-folds con 1,10,20,40,80,160,320,640 vecinos. Los resultados son los siguientes, 
+Para determinar la cantidad de vecinos \'optimo evaluamos el desempeño en cross validation con 10-folds con $k \in \{1,10,20,40,80,160,320,640\} $ vecinos. Los resultados son los siguientes, 
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{../imagenes/knn-n_neighbors}
-     \caption{}
   \end{subfigure}
+  \caption{}
   \label{fig:knn-n_neighbors}
 \end{figure}
 
-El desempeño m\'aximo, menor a 0.9, result\'o ser bajo en comporaci\'on con otro m\'etodos. Nos sorprendi\'o particularmente que la cantidad de vecinos \'optimo para este problema haya sido con un \'unico vecino. 
-
-\todo[inline]{¿Por qu\'e creemos que k=1 result\'o ser la cantidad \'optima de vecinos?. Gustavo: a mi se me ocurre que las variables no agrupan las instancias en espacios bien definidos, sino que se intercalan. Esto indicar\'ia que un problema con las variables que tomamos.}
-
-
+El desempeño m\'aximo fue menor a $0,9$ y result\'o ser bajo en comparaci\'on con otro m\'etodos. Nos sorprendi\'o particularmente que la cantidad de vecinos \'optimo para este problema haya sido con un \'unico vecino. 
 
 \subsection{Random Forest. RF.}
 
@@ -152,7 +156,7 @@ Sigmoid & 154 \\
 De la tabla \ref{table:time_svm} y la figura \ref{fig:svm} concluímos que SVM para un los kernels \emph{linear} y \emph{poly} dan una muy buena eficacia, que el tiempo para \emph{linear} es mucho mayor que para \emph{poly}, pero que ambos casos, el tiempo de validación es claramente más alto que los otros métodos estudiados, aún al trabajar con un dataset acotado.
 
 
-\section{Reducci\'on de dimensionalidad}
+\section{Reducci\'on de dimensionalidad} \label{sec:seleccion}
 
 \subsection{Features Ranking}
 
@@ -167,19 +171,21 @@ Evaluamos la ganancia de cada variable individualmente y obtuvimos el siguiente 
     \label{fig:features_ranking}
   \end{figure}
 
-Este m\'etodo considera la dependecia de las variables. 
+Este ranking no considera la dependecia entre variables. Dos variables correlacionadas pueden tener individualmente la misma ganancia de informaci\'on, pero al ser tomadas juntas
 
 \subsection{Hill climbing}
 
-Implementamos completo un algoritmo de hill climibing. Este m\'etodo de selecci\'on de variables depende de la performance resultante de aplicar a un conjunto de datos, $D$, un modelo $L$, evualuado sobre un subconjunto de atributos $S$. La vecindad de un subconjunto $s$ son todos los subconjuntos que se pueden contruir sacando de $s$ un \'unico elemento, o agregando a $s$ un \'unico elemento. Corrimos 50 procesos de hill climbing evaluando la perfomance en cada punto ejecutando un \'arbol de decisi\'on con cross validation 5-fold. Encontramos 50 \'optimos locales, sin repetici\'on. Las performance de los \'optimos locales estuvieron entre 0.88 y 0.96. Este proceso no fue suficiente para decidir por un \'unico subconjunto de atributos para la selecci\'on de atributos. 
+Implementamos completo un algoritmo de hill climibing. Este m\'etodo de selecci\'on de variables busca maximizar la performance resultante de aplicar a un conjunto de datos, $D$, un modelo $L$, evualuado sobre un subconjunto de atributos $S$ variable. La vecindad de un subconjunto $S$ son todos los subconjuntos que se pueden contruir sacando de $S$ un \'unico elemento, o agregando a $S$ un \'unico elemento. Corrimos 50 procesos de hill climbing evaluando la perfomance en cada punto ejecutando un \'arbol de decisi\'on con cross validation 5-fold. Encontramos 50 \'optimos locales, sin repetici\'on. Las performance de los \'optimos locales estuvieron entre 0.88 y 0.96. Este proceso no fue suficiente para decidir por un \'unico subconjunto de atributos para la selecci\'on de atributos. 
 
+La performance que se obtiene de la validaci\'on cruzada depende de la partici\'on utilizada. Esa variabilidad puede hacer que ciertos subconjuntos $S$ sean a veces consideramos \'otpimos locales y otras veces no. Una forma de solucionar esto ser\'ia realizar validaci\'on cruzada \emph{leave one out}, pero este m\'etodo es muy costoso. Otra opci\'on es fijar 5-folds iguales para todos las pruebas de validaci\'on cruzada y considerar v\'alida \'unicamentre la performance obtenida sobrea esa \'uinica partici\'on.  
 
+Sin embargo, las diferencias entre los \'otpimos locales obtenidos no son significativas para determinar con certeza un \'unico subconjunto de variables. Para eso implementamos otro m\'etodos. 
 
-\subsection{PCA}
+\subsection{Principal Component Analysis. PCA}
 
 \par De los atributos seleccionados, realizamos un reducción de la dimensionalidad
 mediante la técnica de PCA. Dada la matriz de \emph{mails} x \emph{atributos},
-calculamos la matriz de covarianza de los atributos, y realizamos una descomposición en valores singulares (SVD). La matriz de covarianza es una matriz simétrica, por lo tanto sus valores singulares coinciden con sus autovalores, que además son reales y no negativos. En la figura \ref{fig:autovalores}, observamos el valor de los mismos, ordenados de mayor a menor. 
+calculamos la matriz de covarianza de los atributos, y realizamos una descomposición en valores singulares (SVD) mediante la funci\'on \emph{scipy.linalg.svd} \cite{scipy}. La matriz de covarianza es una matriz simétrica, por lo tanto sus valores singulares coinciden con sus autovalores, que además son reales y no negativos. En la figura \ref{fig:autovalores}, observamos el valor de los mismos, ordenados de mayor a menor. 
   \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
@@ -225,7 +231,40 @@ original & 0.52 & 0.01 \\
 
 \section{Resultados}
 
+\todo[inline]{¿Cu\'ales son los resultados?. Me parece que los resultados los fuimos reportando a medida una parte en la secci\'on ``modelos'' y otra en la secci\'on ``reducci\'on de dimensionalidad''. En ese caso habr\'ia que restructurar la iunformaci\'on. No guradamos un subconjunto de datos para test. }
+
+\section{knn + PCA}
+
+A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantidad de vecinos \'optimo es $k=1$. En la siguiente figura se muestra el resultado con $k=1$ y $k=10$ al aumentando la cantidad de atributos que se utilizan para clasificar.  
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../imagenes/knn}
+  \end{subfigure}
+  \caption{Rojo: $k=1$. Negro: $k=10$ }
+  \label{fig:knn-n_neighbors}
+\end{figure}
+
 \section{Discusi\'on}
+
+Varios hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, aparentemente aislados, pensamos que pueden ser en realidad un \'indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados son
+
+\begin{itemize}
+ \item La baja performance de \emph{naive bayes}. 
+ \item El cantidad de vecinos \'optimo para determinar la lcase mediante \emph{KNN} igual a 1. 
+ \item La variedad de \'optimos locales al realizar \emph{hill climbing}. 
+\end{itemize}
+
+
+
+Nos sorprendi\'o particularmente que la cantidad de vecinos \'optimo para este problema haya sido con un \'unico vecino. 
+
+
+
+\todo[inline]{¿Por qu\'e creemos que k=1 result\'o ser la cantidad \'optima de vecinos?. Gustavo: a mi se me ocurre que las variables no agrupan las instancias en espacios bien definidos, sino que se intercalan. Esto indicar\'ia que un problema con las variables que tomamos.}
+
+
 
 
 \scriptsize
