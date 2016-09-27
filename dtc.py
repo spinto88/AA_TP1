@@ -5,37 +5,30 @@ import matplotlib.pyplot as plt
 
 y = np.load('y.npy')
 
-for fact in 'original',: #[5,10,20,30,40,120,'original']:
+perf_PCA = []
+for fact in range(1,128): #[5,10,20,30,40,120,'original']:
     print 'Factors: ' + str(fact)
-
     try:
         X = np.load('X_red' + str(fact) + '.npy')
     except:
         X = np.load('X.npy')
 
-    #clf = DTC()
-    #res = cross_val_score(clf, X, y, cv=10)
-    #print "{:.3f}".format(np.mean(res)), "{:.3f}".format(np.std(res))
-
-
-# PARA INSPECCIONAR PARAMETROS
-# Elijo mi clasificador.
-#    for crit in "gini", "entropy":
-#        for spl in "best", "random":
-#            for m_dep in range(1, X.shape[1], X.shape[1]/10):
-    perf = []
-    for crit in "gini",:
-        for spl in "best",:
+# PARA INSPECCIONAR HIPER-PARAMETROS (http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier)
+    for crit in "gini", "entropy":
+        for spl in "best", "random":
+            perf_dep = []
             for m_dep in range(1, X.shape[1]):
-
-# Ejecuto el clasificador entrenando con un esquema de cross validation de 10 folds.
-            # Params. Trees: http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier
                 clf = DTC(criterion=crit, splitter=spl, max_depth=m_dep)
                 res = cross_val_score(clf, X, y, cv=10)
-                print "{:.3f}".format(np.mean(res)), "{:.3f}".format(np.std(res)), "[crit: {}; spl: {}; m_dep: {}]".format(crit, spl, m_dep)
+                perf_dep.append(np.mean(res))
+            plt.plot(perf_dep, lw=2)
+            plt.xlabel('Profundidad maxima')
+            plt.ylabel('Desempeno (sobre datos entrenamiento)')
 
-                perf.append(np.mean(res))
-                
-    plt.plot(perf, lw=2)
-    plt.xlabel('Profundidad maxima')
-    plt.ylabel('Desempeno (sobre datos entrenamiento)')
+# PARA PCA
+    clf = DTC(criterion='gini', splitter='best', max_depth=15)
+    res = cross_val_score(clf, X, y, cv=10)
+    perf_PCA.append(np.mean(res))
+plt.plot(perf_PCA, lw=2)
+plt.xlabel('Numero de componentes')
+plt.ylabel('Desempeno (sobre datos entrenamiento)')
