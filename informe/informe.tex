@@ -241,6 +241,19 @@ Al evaluar el clasificador $knn$ sobre las variable transformadas, la cantidad d
 
 Tampoco se observa una mejora con respecto a los atributos no transformados
 
+\subsubsection{arboles + PCA}
+
+Fijamos los parametros a partir del analisis ya realizado,
+Máxima profundidad del árbol de desición = 15
+Criterio: Gini
+Splitter: Best
+
+La figura siguiente muestra el desempeño para distinto numero de componentes.
+
+Intertar figura "desempeño_vs_componentes_arboles" porfa.
+
+Como esperabamos, el desempeño crece abruptamente al comienzo para luego hacerlo en forma moderada hasta la componente 43 cuando se alcanza practicamente el valor máximo. Parece entonces ser esa una cantidad adecuada de componentes a considerar.
+
 \subsubsection{random forest + PCA}
 
 Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de coordenadas, $v \in \{5,10,20,40,127\}$
