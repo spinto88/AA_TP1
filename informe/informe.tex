@@ -12,9 +12,10 @@ Sebasti\'an Pinto, Guillermo Pasqualetti, Gustavo Landfried}
 
 \section{Introducci\'on}
 
-\par LLevamos a cabo un análisis de distintos clasificadores automáticos de mails entre las categorías \emph{ham} y \emph{spam}. Los clasificadores son modelos matemáticos que, dada una base de datos compuesta por documentos preclasificados, son capaces de predecir la categoría de un nuevo documento. 
-\par Para llevar a cabo esta tarea, fue necesaria la elección de ciertos atributos o características identificatorias de cada documento, junto con su categoría, que constituyen la base de datos de entrenamiento del clasificador. Una vez transformada la base de datos en un conjunto de atributos por documento, exploramos diferentes modelos buscando la mejor performance. A su vez, estudiamos algunas técnicas de reducción de dimensionalidad para acotar la cantidad de atributos elegidos inicialmente.
-\par La base de datos original consistió en 90000 \emph{mails}, los cuales el 50\% pertenecía a la categoría \emph{ham}, y el resto a la categoría \emph{spam}.
+%\par Llevamos a cabo un análisis de distintos clasificadores automáticos de mails entre las categorías \emph{ham} y \emph{spam}. Los clasificadores son modelos matemáticos que, dada una base de datos compuesta por documentos preclasificados, son capaces de predecir la categoría de un nuevo documento. 
+
+El objetivo de este trabajo práctico es construir un clasificador automático de mensajes de correo electrónico en dos clases: ``spam'' y ``ham''. Para llevar a cabo esta tarea, fue necesario extraer atributos de los documentos. Con ellos exploramos diferentes modelos buscando mejorar la performance obtenidas en validaci\'on cruzada. A su vez, estudiamos algunas técnicas de reducción de dimensionalidad para acotar la cantidad de atributos elegidos inicialmente.
+%\par La base de datos original consistió en 90000 \emph{mails}, los cuales el 50\% pertenecía a la categoría \emph{ham}, y el resto a la categoría \emph{spam}.
 
 \subsection{Metodología}
 
@@ -22,14 +23,9 @@ Sebasti\'an Pinto, Guillermo Pasqualetti, Gustavo Landfried}
 
 \section{Extracci\'on de atributos} \label{sec:extraccion}
 
-\par Identificamos 127 atributos para la clasificación del mail, los cuales constituyeron dos grupos: características del texto y palabras involucradas. Dentro de las características del texto elegimos:
-\begin{itemize}
-\item Largo del documento.
-\item Cantidad de espacios en blanco.
-\item Si el archivo contiene o no html.
-\item Si el mail es una respuesta.
-\item Cantidad de caracters no ASCII.
-\end{itemize}
+\par Identificamos 127 atributos para la clasificación del mail, los cuales constituyeron dos grupos: características del texto y palabras involucradas. \\
+
+Dentro de las características del texto elegimos: a) Largo del documento, b) Cantidad de espacios en blanco, c) Si el archivo contiene o no html, d) Si el mail es una respuesta, e) Cantidad de caracters no ASCII.
 
 La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph{spam} es más probable que contenga un archivo \emph{html} y una mayor cantidad de caracteres no ASCII, como sucede en el empleo de idiomas que no sea el inglés. Por otro lado, en un mail etiquetado como \emph{ham} esperamos que tenga un largo menor que \emph{spam}, que haya grandes diferencias en el empleo de uso de espacios en blanco, y si el mail es una respuesta, probablemente provenga de una conversación entre dos usuarios reales.
 
@@ -39,12 +35,12 @@ La hipótesis detrás de dichas elecciones es que un mail clasificado como \emph
 \item Palabras reportadas en dos papers \cite{Gunal} y \cite{Vaughan}. 
 \end{itemize}
 
-En primer lugar extrajimos las palabras m\'as frecuentes en \emph{spam} y \emph{ham}. Para obtener variables representativas de cada clase nos quedamos unicamente con la diferencia sim\'etrica. De ellas extraímos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. Para la realización de esta tarea utilizamos la librería de python \emph{nltk} (\cite{nltk}). El atributo entonces elegido es la cantidad de veces que aparece una string dado en el texto. 
+En primer lugar extrajimos las palabras m\'as frecuentes en \emph{spam} y \emph{ham}. Para obtener variables representativas de cada clase nos quedamos \'unicamente con la diferencia sim\'etrica. De ellas extrajimos los 25 términos más frecuentes del dataset tanto para \emph{ham} como para \emph{spam}. Para la realización de esta tarea utilizamos la librería de python \emph{nltk} (\cite{nltk}). Los atributos elegido son la cantidad de veces que aparecen cada una de esas palabras en el texto. 
 A su vez incluimos un listado de palabras propuestas por los trabajos \cite{Gunal} y \cite{Vaughan} que fueron catalogadas como buenas discriminadoras entre mails \emph{ham} y \emph{spam}. 
 
 \section{Modelos} \label{sec:modelos}
 
-En esta secci\'on discutimos los distintos modelos disponibles y evaluamos algunos de sus par\'ametros.  
+En esta secci\'on discutimos distintos modelos y evaluamos algunos de sus par\'ametros.  
 
 \subsection{Decision Tree Classifier. DTC.}
 
@@ -127,7 +123,7 @@ La cantidad m\'axima de atributos $a$ que se utiliza en cada iteraci\'on la deja
 
 \subsection{Suport Vector Machine. SVM.}
 
-\par Decidimos realizar el estudio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (\cite{sklearn}) observamos que el tiempo de ejecución es cuadrático con el número de muestras originales, por lo cual vuelve a este método muy lento de entrenar y validar respecto de los estudiados en las secciones anteriores. Por lo tanto, con un dataset acotado a 10000 mails (50\% ham - 50\% spam) obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C, que constituye un valor de tolerancia ante datos mal clasificados.
+\par Decidimos realizar el estudio para SVM con un subconjunto del dataset original. Del tutorial de \emph{scikit-learn} (\cite{sklearn}) observamos que la complejidad computacional es cuadrática en el tamaño de la muestra. Este método es muy lento para entrenar y validar con la totalidad de los datos. Por lo tanto utilizamos un dataset acotado a 10000 mails (50\% ham - 50\% spam) con el cual obtuvimos las eficacias de la figura \ref{fig:svm} para distintos kernels y valores del parámetro C, que constituye un valor de tolerancia ante datos mal clasificados.
 
 \begin{figure}[H]
   \centering
@@ -172,15 +168,15 @@ Evaluamos la ganancia de cada variable individualmente y obtuvimos el siguiente 
     \label{fig:features_ranking}
   \end{figure}
 
-Este ranking no considera la dependecia entre variables. Dos variables correlacionadas pueden tener individualmente la misma ganancia de informaci\'on, pero al ser tomadas juntas
+Este ranking no considera la dependecia entre variables. Dos variables correlacionadas pueden tener individualmente la misma ganancia de informaci\'on, pero al ser tomadas juntas una puede resultar superflua. Para tener en cuenta la interecci\'on implementamos otros m\'etodos. 
 
 \subsection{Hill climbing}
 
 Implementamos completo un algoritmo de hill climibing. Este m\'etodo de selecci\'on de variables busca maximizar la performance resultante de aplicar a un conjunto de datos, $D$, un modelo $L$, evualuado sobre un subconjunto de atributos $S$ variable. La vecindad de un subconjunto $S$ son todos los subconjuntos que se pueden contruir sacando de $S$ un \'unico elemento, o agregando a $S$ un \'unico elemento. Corrimos 50 procesos de hill climbing evaluando la perfomance en cada punto ejecutando un \'arbol de decisi\'on con cross validation 5-fold. Encontramos 50 \'optimos locales, sin repetici\'on. Las performance de los \'optimos locales estuvieron entre 0.88 y 0.96. Este proceso no fue suficiente para decidir por un \'unico subconjunto de atributos para la selecci\'on de atributos. 
 
-La performance que se obtiene de la validaci\'on cruzada depende de la partici\'on utilizada. Esa variabilidad puede hacer que ciertos subconjuntos $S$ sean a veces consideramos \'otpimos locales y otras veces no. Una forma de solucionar esto ser\'ia realizar validaci\'on cruzada \emph{leave one out}, pero este m\'etodo es muy costoso. Otra opci\'on es fijar 5-folds iguales para todos las pruebas de validaci\'on cruzada y considerar v\'alida \'unicamentre la performance obtenida sobrea esa \'uinica partici\'on.  
+La performance que se obtiene de la validaci\'on cruzada depende de la partici\'on utilizada. Esa variabilidad puede hacer que ciertos subconjuntos $S$ sean a veces consideramos \'otpimos locales y otras veces no. Una forma de solucionar esto ser\'ia realizar validaci\'on cruzada \emph{leave one out}, pero este m\'etodo es muy costoso. Otra opci\'on es fijar 5-folds iguales para todos las pruebas de validaci\'on cruzada y considerar \'unicamentre la performance obtenida sobrea esa partici\'on particular.  
 
-Sin embargo, las diferencias entre los \'otpimos locales obtenidos no son significativas para determinar con certeza un \'unico subconjunto de variables. Para eso implementamos otro m\'etodos. 
+Sin embargo, las diferencias entre los \'otpimos locales obtenidos no fueron significativas para determinar con certeza un \'unico subconjunto de variables. Para eso implementamos otro m\'etodo. 
 
 \subsection{Principal Component Analysis. PCA}
 
@@ -198,9 +194,8 @@ calculamos la matriz de covarianza de los atributos, y realizamos una descomposi
 
 \par Los autovectores obtenidos de la factorización son una combinación lineal de los atributos elegidos originalmente. Dichos autovectores pueden ser tomados como nuevos atributos, los cuales, a partir de sus autovalores asociados, sabemos en cuáles hay una mayor variabilidad de los datos. 
 \par Para dar una interpretación a los nuevos atributos, observamos la representación de los autovectores en el espacio de atributos originales. Como criterio, estudiamos qué componentes tienen un valor absoluto mayor a $0.1$ en el espacio de atributos originales. En la tabla \ref{table:autovectores} mostramos el resultado para las 5 direcciones principales. De la tabla vemos que las dos direcciones principales prácticamente coindicen con dos de los atributos elegidos originalmente, asociados al formato del mail en cuestión. Los autovectores siguientes se constituyen de un grupo de términos, de los cuales el 4º y 5º autovector muestran una correlación en la terminología (o procedencia) de los miembros del grupo más visible que en el 3º autovector. 
-\begin{table}
+\begin{table}[H]
 \centering
-\label{table:autovectores}
 \begin{tabular}{ll}
 Autovector & Componentes principales \\
 1 & Largo del documento. \\
@@ -210,19 +205,14 @@ Autovector & Componentes principales \\
 5 & Términos: receive, email, upgrade, fast, spam \\
 \end{tabular}
 \caption{Principales componentes de los autovectores surgidos de PCA}
+\label{table:autovectores}
 \end{table}
-
-
-\subsubsection{trees + PCA}
-
-\todo[inline]{Probar tree con 5 10 20 , 40 80 y 127 variables }
-
 
 \subsubsection{Naive Bayes + PCA}\label{sec:NB_PCA}
 
-\par El método de Naive Bayes no resultó satisfactorio para el dataset original, como reportamos en la sección \ref{sec:NB}. La principal hipótesis de tan mal desempeño, fue el hecho de que Naive Bayes suponga que los atributos son independientes entre sí. Por lo tanto, esperabamos que con los nuevos atributos obtenidos mediante la técnica PCA, el método funcione mejor, debido a que dichos atributos se construyen al pedir ortogonalidad entre los mismos, resultando en atributos más descorrelacionados que los atributos originales entre sí. En la tabla \ref{table:NB} reportamos los valores de eficacia, donde prácticamente no se ven diferencias en tomar un subconjunto de atributos surgidos de PCA y el desempeño original. \footnote{Cuando estudiamos el caso de Naive-Bayes con el dataset original, encontramos grandes diferencias en los resultados obtenidos, según en qué ordenador corríamos el script. El problema estaba en una diferencia de versiones de la librería \emph{scikit-learn}. Los resultados reportados se corresponden con la versión 0.17.1.}
+\par El método de Naive Bayes no resultó satisfactorio para el dataset original, como reportamos en la sección \ref{sec:NB}. La principal hipótesis de tan mal desempeño, fue el hecho de que Naive Bayes suponga que los atributos son independientes entre sí. Por lo tanto, esper\'abamos que con los nuevos atributos obtenidos mediante la técnica PCA, el método funcione mejor, debido a que dichos atributos se construyen buscando ortogonalidad entre los mismos, resultando en atributos más descorrelacionados que los atributos originales entre sí. En la tabla \ref{table:NB} reportamos los valores de eficacia, donde prácticamente no se ven diferencias en tomar un subconjunto de atributos surgidos de PCA y el desempeño original. \footnote{Cuando estudiamos el caso de Naive-Bayes con el dataset original, encontramos grandes diferencias en los resultados obtenidos, según en qué ordenador corríamos el script. El problema estaba en una diferencia de versiones de la librería \emph{scikit-learn}. Los resultados reportados se corresponden con la versión 0.17.1.}
 
-\begin{table}
+\begin{table}[H]
 \centering
 \caption{}
 \label{table:NB}
@@ -238,7 +228,7 @@ original & 0.52 & 0.01 \\
 
 \subsubsection{knn + PCA}
 
-A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantidad de vecinos \'optimo es $k=1$. En la siguiente figura se muestra el resultado con $k=1$ y $k=10$ al aumentando la cantidad de atributos que se utilizan para clasificar.  
+Al evaluar el clasificador $knn$ sobre las variable transformadas, la cantidad de vecinos \'optimo fue nuevamente $k=1$. En la siguiente figura se muestra el resultado con $k=1$ y $k=10$ al aumentando la cantidad de atributos que se utilizan para clasificar.  
 
 \begin{figure}[H]
   \centering
@@ -248,6 +238,8 @@ A\'un evaluado el clasificador $knn$ sobre las variable transformadas, la cantid
   \caption{Rojo: $k=1$. Negro: $k=10$ }
   \label{fig:knn-n_neighbors}
 \end{figure}
+
+Tampoco se observa una mejora con respecto a los atributos no transformados
 
 \subsubsection{random forest + PCA}
 
@@ -263,6 +255,8 @@ Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de
   \label{fig:rf}
 \end{figure}
 
+No se observa mejora con respecto a los atributos no transformados. 
+
 \subsubsection{SVM + PCA}
 
 \par Estudiamos el caso de SVM con kernel polinomial y variables reducidas, sin embargo el tiempo de ejecución se incrementó significativamente respecto al caso de tomar todas los atributos originales, por lo que descartamos que sea una mejora para este modelo.
@@ -271,11 +265,11 @@ Probamos random forest con 40 \'arboles con $v$ variables en el nuevo sistema de
 
 \par Luego de analizar diferentes modelos, concluimos que los métodos que mostraron una mejor performance para el conjunto de atributos son SVM y Random Forest, teniendo el último un tiempo de validación y entrenamiento considerablemente menor que el primero.
 \par La generación de nuevos atributos mediante la reducción de dimensionalidad con técnicas tales como PCA, no supuso una mejora significante en el balance entre tiempo de ejecución y eficacia de los modelos. 
-\par Por otro lado, vale destacar que los resultados reportados corresponden de realizar un promedio de los rendimientos obtenidos al hacer \emph{cross-fold validation}, por lo que somos concientes que podemos estar realizando un \emph{over-fitting} sobre los datos analizados, y la perfomance de los modelos ante una base de datos nueva puede diferir de la predicha en este trabajo.
+\par Por otro lado, vale destacar que los resultados reportados corresponden de realizar un promedio de los rendimientos obtenidos al hacer \emph{cross-fold validation}, por lo que somos concientes que podemos estar realizando un \emph{over-fitting} sobre los datos analizados, y la perfomance de los modelos ante una base de datos nueva puede diferir de la predicha en este trabajo. 
 
 \section{Discusi\'on}
 
-Algunos hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, que al principio nos parec\'ian eventos aislados, pensamos que pueden ser considerados en realidad como un \'indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados ser\'ian
+Algunos hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'actico, que al principio nos parec\'ian eventos aislados, pensamos que pueden ser considerados en realidad como un indicio de un problema originado en la extracci\'on de atributos. Los hechos aparentemente aislados ser\'ian
 
 \begin{itemize}
  \item La baja performance de \emph{naive bayes}. 
@@ -283,15 +277,16 @@ Algunos hechos que fueron surgiendo a medida que se desarrollaba el trabajo pr\'
  \item La variedad de \'optimos locales al realizar \emph{hill climbing}. 
 \end{itemize}
 
-Hoy suponemos que la baja performance de naive bayes se debe a una fuerte dependencia entre los atributos. A su vez pensamos que la cantidad de vecinos \'optimo para knn sea un \'unico vecino podr\'ia estar indicando que los datos no est\'an bien separados en el espacio, es decir, que los atributos no distinguen con suficentemente claridad una clase de otra. Finalmente, la variedad de \'optimos locales sospechamos que se debe a la alta correlaci\'on entre los datos. 
-
-Algunas que se podr\'ian mejorar para la extracci\'on de atributos 
+Hoy suponemos que la baja performance de naive bayes se debe a una fuerte dependencia entre los atributos. A su vez pensamos que la cantidad de vecinos \'optimo para knn sea un \'unico vecino podr\'ia estar indicando que los datos no est\'an bien separados en el espacio, es decir, que los atributos no distinguen con suficentemente claridad una clase de otra. Finalmente sospechamos que la variedad de \'optimos locales se debe a la alta correlaci\'on entre los datos. 
+Algunas cosas que deber\'iamos implementar para mejorar para la extracci\'on de atributos 
 
 \begin{itemize}
  \item Sacar el encabezado del mail para la selecci\'on de palabras. 
  \item Sacar el html para la selecci\'on de palabras. 
  \item Estandarizar los string de tipo archivo adjunto (m\'as de tres aaa) como una \'unica variable 
 \end{itemize}
+
+
 
 
 
