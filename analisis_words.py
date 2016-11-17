@@ -1,6 +1,7 @@
 import codecs
 import os
 
+
 fp = codecs.open('Words_ham.txt','r','utf-8')
 ham_text = fp.read()
 fp.close()
